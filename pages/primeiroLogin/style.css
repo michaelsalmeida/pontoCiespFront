@@ -1,0 +1,94 @@
+* {
+    padding: 0;
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#divLogin {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 30%;
+    left: 40%;
+    background-color: white;
+    width: 450px;
+    height: 400px;
+    gap: 20px;
+    border-radius: 50px 0px 50px 0px;
+    opacity: 0.85;
+}
+
+#plogin {
+    font-size: 30px;
+    font-weight: bolder
+}
+
+#pNovoFuncionario {
+    font-weight: bolder;
+}
+
+#imgLogo {
+    width: 200px;
+}
+
+#background-video {
+    position: fixed; /* Posiciona o vídeo fixo na tela */
+    top: 0; /* Define a posição superior do vídeo */
+    left: 0; /* Define a posição esquerda do vídeo */
+    width: 100%; /* Define a largura do vídeo como 100% da tela */
+    height: 100%; /* Define a altura do vídeo como 100% da tela */
+    object-fit: cover; /* Faz o vídeo cobrir toda a tela, mantendo a proporção */
+    z-index: -1; /* Coloca o vídeo atrás de outros elementos da página */
+}
+
+
+.inputLogin {
+    width: 60%;
+    padding: 10px 20px 10px 20px;
+    border-radius: 20px 0px 20px 0px;
+    border-color: black;
+    border-style: double;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+#registro:focus {
+    box-shadow: 0px 0px 20px 5px black;
+    transition: 0.5s;
+}
+
+#senha:focus {
+    box-shadow: 0px 0px 20px 5px black;
+    transition: 0.5s;
+}
+
+
+#entrar {
+    border-color: var(--red);
+    border-style: double;
+    padding: 10px;
+    font-weight: bolder;
+    color: var(--red);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#entrar:hover {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+#criarConta {
+    color: black;
+}
+
+@media (max-width: 1366px) {
+    #divLogin {
+        top: 20%;
+        left: 35%;
+    }
+}

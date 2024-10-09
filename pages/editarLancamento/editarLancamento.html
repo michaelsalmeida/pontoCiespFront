@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../scripts/loaders/header.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../global.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <header></header>
+
+    <div id="botaoLogoff">
+        <button id="sair">Logoff</button>
+    </div>
+    
+    <div>
+        <h1>Edição de horário</h1>
+    </div>
+
+    <div id="containerLancamento">
+    
+            <div id="divSelect">
+                <label for="data">DATA *</label>
+                <input type="date" name="data" id="data" class="inputCadastro" required disabled>
+                <p id="labelDataInvalida" style="display: none;">data ja possui lançamento</p>
+            </div>
+        
+            <div id="divMedio">
+                <div id="divPequeno">
+                    <label for="horaEntrada">ENTRADA *</label>
+                    <input type="time" name="horaEntrada" id="horaEntrada" class="inputCadastro" required disabled>
+                </div>
+        
+                <div id="divPequeno" class="divEsquerdo">
+                    <label for="horaSaida">SAIDA *</label>
+                    <input type="time" name="horaSaida" id="horaSaida" class="inputCadastro" required disabled>
+                    
+                </div>
+        
+            </div>
+            
+            <div id="divMedio"> 
+                <div id="divPequeno">
+                    <label for="idaAlmoco">IDA ALMOÇO *</label>
+                    <input type="time" name="idaAlmoco" id="idaAlmoco" class="inputCadastro" required disabled>
+                </div>
+                
+                <div id="divPequeno" class="divEsquerdo">
+                    <label for="voltaAlmoco">VOLTA ALMOÇO *</label>
+                    <input type="time" name="voltaAlmoco" id="voltaAlmoco" class="inputCadastro" required disabled> 
+
+                </div>
+            </div>
+        
+            <div id="divMedio">
+                <div id="divPequeno">
+
+                    <label for="motivoHorario">MOTIVO *</label>
+        
+                    <select id="motivoHorario" class="inputMaior" value="00 - Jornada Normal">
+                        <option value="#" selected>Escolha um motivo</option>
+                        <option value="00 - Jornada Normal">00 - Jornada Normal</option>
+                        <option value="01 - Motivo Particular">01 - Motivo Particular</option>
+                        <option value="02 - Serviço Externo">02 - Serviço Externo</option>
+                        <option value="03 - Banco de Horas">03 - Banco de Horas</option>
+                        <option value="04 - Atestado Médico">04 - Atestado Médico</option>
+                        <option value="05 - Férias">05 - Férias</option>
+                        <option value="06 - Licença Maternidade">06 - Licença Maternidade</option>
+                        <option value="07 - Licença Paternidade">07 - Licença Paternidade</option>
+                        <option value="08 - Outros">08 - Outros</option>
+                    </select>
+
+                </div>
+
+                <div id="divPequeno" class="divEsquerdo">
+                    <label for="motivo">DESCREVA *</label>
+            
+                    <input type="text" name="motivo" id="motivo" class="inputMaior" placeholder="Descreva o motivo" value="Jornada normal" required>
+
+                </div>
+    
+            </div>
+            
+            <div id="divBotaoLancar">
+                <button id="lancarHora">LANÇAR HORA</button>
+        
+            </div>
+ 
+     </div>
+
+    </div>
+
+
+    <script type="module">
+        import { alertas, alertaPageAtual } from '../sweetalert.js';
+        import { sair, verificarLogoff, verificarCargoLogado } from '../funcoes.js';
+
+        document.getElementById('sair').addEventListener('click', async () => {
+            sair();
+        })
+
+        async function puxarDadosDoHorario () {
+            const idLancamento = sessionStorage.getItem('idLancamento');
+
+            const data = document.getElementById('data');
+            const entrada = document.getElementById('horaEntrada');
+            const saida = document.getElementById('horaSaida');
+            const idaAlmoco = document.getElementById('idaAlmoco');
+            const voltaAlmoco = document.getElementById('voltaAlmoco');
+            const motivo = document.getElementById('motivoHorario');
+            const descricao = document.getElementById('motivo');
+
+            const requisicao = await fetch ('http://localhost:3000/usuario/puxarDadosHorario', {
+                method : 'POST',
+                    credentials : 'include',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        'Cookies' : decodeURIComponent(document.cookie)
+                },
+                body : JSON.stringify({idLancamento})
+            })
+
+            const resposta = await requisicao.json();
+
+            
+            const dataFormatada = resposta['dados'][0]['data'].split('T')[0];
+            
+            console.log(resposta);
+
+            data.value = dataFormatada;
+            entrada.value = resposta['dados'][0]['entrada'];
+            saida.value = resposta['dados'][0]['saida'];
+            idaAlmoco.value = resposta['dados'][0]['idaIntervalo'];
+            voltaAlmoco.value = resposta['dados'][0]['voltaIntervalo'];
+            motivo.value = resposta['dados'][0]['motivo'];
+            descricao.value = resposta['dados'][0]['descricao'];
+
+            
+        }
+
+
+        window.addEventListener('load', async () => {
+
+            verificarLogoff();
+
+            puxarDadosDoHorario();
+
+            const cargo = await verificarCargoLogado();
+
+            if (cargo == 'administrador') {
+                const botaoCadastro = document.getElementById('botaoCad');
+                const botaoPesquisa = document.getElementById('botaoPes');
+
+                botaoCadastro.style.display = 'block';
+                botaoPesquisa.style.display = 'block';
+            }
+
+            
+            alertas();
+        })
+
+        document.getElementById('motivoHorario').addEventListener('change', () => {
+            console.log(document.getElementById('motivoHorario').value);
+        })
+
+        
+        async function relancarHoras () {
+            const motivo = document.getElementById('motivoHorario').value;
+            const descricao = document.getElementById('motivo').value;
+            const idLancamento = sessionStorage.getItem('idLancamento');
+
+            if (motivo != '#' && descricao != '') {
+
+                try {
+                    
+                    const dadosEnviados = {
+                        idLancamento,
+                        motivo,
+                        descricao
+                    }
+
+                    
+                    const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
+                        method : 'POST',
+                        credentials : 'include',
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Cookies' : decodeURIComponent(document.cookie)
+                        },
+                        body : JSON.stringify(dadosEnviados)
+                    });
+        
+                    const resposta = await requisicao.json();
+
+
+                    sessionStorage.setItem('status', resposta.status);
+                    sessionStorage.setItem('mensagem', resposta.msg);
+        
+                    if (resposta.status == 'success') {
+                        window.location.href = '../resumoHoras/resumoHoras.html';
+                    } else {
+                        alertas();
+                    }
+
+                } catch (error) {
+                    console.log
+                }
+                     
+            } else {
+                alertaPageAtual('error', 'Preencha todos os campos');
+            }
+
+        } 
+
+        document.getElementById('lancarHora').addEventListener('click', () => {
+            relancarHoras();
+        })
+    </script>
+    
+</body>
+</html>

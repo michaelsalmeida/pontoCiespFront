@@ -1,0 +1,248 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script src="../../scripts/loaders/header.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../global.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header></header>
+
+    <div id="botaoLogoff">
+        <button id="sair">Logoff</button>
+    </div>
+
+    <div id="divCadastro">
+        <p>Novo cadastro</p>
+        <div id="divMedio">
+            <div id="divPequeno">
+                <label for="registro" id="textLabels">Registro</label>
+                <input type="text" id="registro" class="inputCadastro" placeholder="digite seu registro" required>
+            </div>
+            <div id="divPequeno" class="pequenoEsquerdo">
+                <label for="nome" id="textLabels">Nome</label>
+                <input type="text" id="nome" class="inputCadastro" placeholder="digite seu nome" required>
+            </div>
+        </div>
+
+        <div id="divMedio">
+            <div id="divPequeno">
+                <label for="sobrenome" id="textLabels">Sobrenome</label>
+                <input type="text" id="sobrenome" class="inputCadastro" placeholder="digite seu sobrenome" required>
+            </div>
+            <div id="divPequeno" class="pequenoEsquerdo">
+                <label for="email" id="textLabels">E-mail</label>
+                <input type="email" id="email" class="inputCadastro" placeholder="digite seu email" required>
+    
+            </div>
+        </div>
+
+        <div id="divSelect">
+            <label for="cargo" id="textLabels">Selecione o Cargo</label>
+            <select id="cargo" name="cargo" class="inputCadastro" required>
+                <option value="funcionario">Funcionário</option>
+                <option value="administrador">Administrador</option>
+            </select>
+        </div>
+
+        <button id="cadastrar">
+            CADASTRAR
+        </button>
+    </div>
+
+    <div id="modal">
+        <button id="fechaModal">X</button>
+        <label for="senhaADM">Digite sua senha de administrador para confirmar novo cadastro</label>
+        <input type="password" id="senhaADM" name="senhaADM" required>
+    </div>
+
+    <script type="module">
+        import { alertas, alertaPageAtual } from '../sweetalert.js';
+
+        import { sair, verificarLogoff } from '../funcoes.js';
+
+        window.addEventListener('load', async () => {
+
+            verificarLogoff();
+
+            const cargo = await verificarCargoLogado();
+
+            console.log(cargo)
+
+            if (cargo == 'administrador') {
+                const botaoCadastro = document.getElementById('botaoCad');
+
+                botaoCadastro.style.display = 'block';
+            }
+
+            alertas();
+        })
+
+        document.getElementById('sair').addEventListener('click', async () => {
+            sair();
+        })
+
+        function teste () {
+            const tipo = document.getElementById('cargo').value;
+            console.log(tipo)
+        }
+
+        async function verificarSenhaMestre (senha) {
+            const requisicao = await fetch (`http://localhost:3000/usuario/verificarSenhaMestre`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({ senha }) 
+                });
+    
+            const resposta = await requisicao.json();
+
+            console.log(resposta);
+
+            if ( resposta.status == 'success') {
+                entrar();
+            } else {
+                Swal.fire({
+                    title: "Senha incorreta",
+                    showClass: {
+                        popup: `
+                        animate__animated
+                        animate__fadeInUp
+                        animate__faster
+                        `
+                    },
+                    hideClass: {
+                        popup: `
+                        animate__animated
+                        animate__fadeOutDown
+                        animate__faster
+                        `
+                    }
+                });
+            }
+        }
+
+        async function verificarCargoLogado () {
+            const requisicao = await fetch ('http://localhost:3000/usuario/verificarCargoLogado', {
+                        method : 'POST',
+                        headers : {
+                            'Content-Type':'application/json',
+                            'Cookies' : decodeURIComponent(document.cookie)
+                        },
+                    })
+        
+            const resposta = await requisicao.json();
+
+            return resposta.tipo;
+        }
+
+        async function tipoFuncionario () {
+            const tipo = document.getElementById('cargo').value;
+
+            const cargoCerto = await verificarCargoLogado();
+            
+            if (cargoCerto == 'administrador') {
+                if (tipo == 'funcionario') {
+                    entrar();
+                } else {
+
+                        const { value: password } = await Swal.fire({
+                            title: "Cadastro de um novo Administrador",
+                            input: "password",
+                            inputLabel: "Digite a senha mestre",
+                            inputPlaceholder: "Enter your password",
+                            inputAttributes: {
+                                maxlength: "10",
+                                autocapitalize: "off",
+                                autocorrect: "off"
+                            }
+                        });
+                        if (password) {
+                            verificarSenhaMestre(password);
+                        }
+                        
+                    }
+            } else {
+                alertaPageAtual('error', 'Cadastro só são feitos por administradores');
+            }
+        }
+
+        async function entrar () {
+            const registro = document.getElementById('registro').value;
+            const nome = document.getElementById('nome').value;
+            const sobrenome = document.getElementById('sobrenome').value;
+            const email = document.getElementById('email').value;
+            const tipo = document.getElementById('cargo').value;
+
+            const dadosEnviados = {
+                registro : registro,
+                nome : nome,
+                sobrenome : sobrenome,
+                email : email, 
+                tipo : tipo
+            };
+
+            console.log(dadosEnviados);
+
+            const requisicao = await fetch (`http://localhost:3000/usuario/cadastro`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(dadosEnviados) 
+            });
+
+            const resposta = await requisicao.json();
+            
+            if (resposta.status == 'success') {
+                sessionStorage.setItem('status', resposta.status);
+                sessionStorage.setItem('mensagem', resposta.msg);
+
+                window.location.href = '../resumoHoras/resumoHoras.html';
+                
+            } else {
+                alertaPageAtual(resposta.status, resposta.msg);
+            }
+        }
+
+        document.getElementById('cadastrar').addEventListener('click', () => {
+            tipoFuncionario();
+        })
+
+        document.getElementById('cargo').addEventListener('change', () => {
+            teste();
+        })
+
+        function fechaModal() {
+            document.getElementById('modal').setAttribute('style', 'none');
+        }
+
+        document.getElementById('fechaModal').addEventListener('click', () => {
+            fechaModal();
+        })
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- function removerSessionStorage(){
+    sessionStorage.removeItem('status');
+    sessionStorage.removeItem('mensagem');
+}
+
+
+export async function alertaPageAtual (status, mensagem) {
+  sessionStorage.setItem('status', status);
+  sessionStorage.setItem('mensagem', mensagem);
+
+  alertas();
+} -->

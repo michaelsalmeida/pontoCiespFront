@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <video autoplay muted loop id="background-video">
+        <source src="../../assets/eu_sou_o_ciesp.mp4" type="video/mp4">
+        Seu navegador não suporta a tag video.
+    </video>
+    <!-- <img src="../../img/logo_ciesp.png" alt="Logo do CIESP" id="imgLogo"> -->
+
+    <div id="divLogin">
+        <p id="plogin">LOGIN</p>
+    
+        <label for="registro">Registro</label>
+        <input type="text" id="registro" name="registro" class="inputLogin" placeholder="N° de registro" required>
+    
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" class="inputLogin" placeholder="Digite sua senha" required>
+    
+        <button id="entrar">Entrar</button>
+    </div>
+    
+    <script type="module">
+        import { alertas, alertaPageAtual } from '../sweetalert.js';
+        
+        window.addEventListener('load', async () => {
+            alertas();
+        })
+
+        document.getElementById('registro').addEventListener('blur', async () => {
+            verificarPrimeiroAcesso();
+        })
+
+        async function verificarPrimeiroAcesso () {
+            console.log('entrei');
+            
+            let registro = document.getElementById('registro').value;
+
+            if (registro != '') {
+                const requisicao = await fetch ('http://localhost:3000/usuario/verificarPrimeiroRegistro', {
+                    method : 'POST',
+                    credentials : 'include',
+                    headers : {
+                        'content-type' : 'application/json',
+                        'Cookies' : decodeURIComponent(document.cookie)
+                    },
+                    body : JSON.stringify({ registro })
+                })
+    
+                const resposta = await requisicao.json();
+    
+                console.log(resposta);
+    
+                if (resposta.senhaNoBanco.senha == 'Ciesp@sul') {
+                    sessionStorage.setItem('status', 'info');
+                    sessionStorage.setItem('mensagem', 'Primeiro acesso, realize o cadastro da sua senha');
+                    localStorage.setItem('registro', registro);
+    
+                    window.location.href = '../primeiroLogin/primeiroLogin.html';
+                }
+
+            }
+
+
+        }
+
+        async function Logar () {
+            let registro = document.getElementById('registro').value;
+            let senha = document.getElementById('senha').value;
+
+            const requisicao = await fetch ('http://localhost:3000/usuario/login', {
+                method : 'POST',
+                credentials : 'include',
+                headers : {
+                    'content-type' : 'application/json',
+                    'Cookies' : decodeURIComponent(document.cookie)
+                },
+                body : JSON.stringify({ registro, senha })
+            })
+
+            const resposta = await requisicao.json();
+
+            console.log(resposta);
+
+            if (resposta.status == 'success') {
+                sessionStorage.setItem('nome', resposta.nome);
+                
+                const d = new Date();
+                d.setTime(d.getTime() + (3*60*60*1000));
+                let expires = "expires="+ d.toUTCString();
+                console.log(resposta);
+
+                document.cookie = `usuario=${resposta.cookie}; expires=${expires}; path=/;`;
+
+                window.location.href = '../resumoHoras/resumoHoras.html';
+
+            } else {
+                alertaPageAtual(resposta.status, resposta.msg);
+            }
+        }
+        
+
+        document.getElementById('entrar').addEventListener('click', () => { 
+            Logar();
+        })
+
+
+    </script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+</body>
+</html>

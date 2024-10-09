@@ -1,0 +1,148 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(/assets/background.jpg);
+    background-repeat: no-repeat; /* Impede que a imagem se repita */
+    background-position: center; /* Centraliza a imagem horizontal e verticalmente */
+    background-attachment: fixed; /* Faz com que a imagem fique fixa na tela */
+    background-size: cover;
+    background-size: 250px;
+    background-position-y: 450px;
+}
+
+#botaoLogoff {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 5px;
+    width: 100%;
+    font-weight: bolder; 
+}
+
+#sair {
+    border-color: var(--red);
+    border-style: double;
+    padding: 10px;
+    font-weight: bolder;
+    color: var(--red);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#sair:hover {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+#divCadastro {
+    margin-top: 100px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+
+#divMedio {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+#divPequeno {
+    display: flex;
+    flex-direction: column;
+}
+
+.pequenoEsquerdo {
+    display: flex;
+    align-items: flex-end;
+}
+
+.inputCadastro {
+    width: 92%;
+    padding: 10px 20px 10px 20px;
+    border-radius: 20px 0px 20px 0px;
+    border-color: black;
+    border-style: double;
+}
+
+#divSelect {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#textLabels {
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+#cadastrar {
+    border: 3px solid var(--red);
+    border-radius: 10px;
+    width: 100px;
+    height: 40px;
+    font-weight: bolder;
+    background-color: white;
+    color: var(--red);
+    cursor: pointer;
+}
+
+#cadastrar:hover {
+    background-color: var(--red);
+    color: white;
+    transition: 0.5s;
+}
+
+@media (max-width: 1366px) {
+    body {
+        background-position-y: 310px;
+        background-attachment: scroll;
+    }
+    
+}
+
+@media (max-width: 700px) {
+    #divMedio {
+        flex-direction: column;
+    }
+
+    body {
+        background-size: 200px;
+        background-position-y: 100px;
+        margin-top: 20px;
+    }
+}
+
+p {
+    font-weight: bolder;
+    font-size: 30px;
+}
+
+
+#modal {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+    width: 70%;
+    height: 70%;
+    
+}
