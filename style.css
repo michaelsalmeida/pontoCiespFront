@@ -48,16 +48,6 @@
     width: 200px;
 }
 
-#background-video {
-    position: fixed; /* Posiciona o vídeo fixo na tela */
-    top: 0; /* Define a posição superior do vídeo */
-    left: 0; /* Define a posição esquerda do vídeo */
-    width: 100%; /* Define a largura do vídeo como 100% da tela */
-    height: 100%; /* Define a altura do vídeo como 100% da tela */
-    object-fit: cover; /* Faz o vídeo cobrir toda a tela, mantendo a proporção */
-    z-index: -1; /* Coloca o vídeo atrás de outros elementos da página */
-}
-
 
 .inputLogin {
     width: 60%;
