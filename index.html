@@ -44,7 +44,7 @@
             let registro = document.getElementById('registro').value;
 
             if (registro != '') {
-                const requisicao = await fetch ('http://localhost:3000/usuario/verificarPrimeiroRegistro', {
+                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarPrimeiroRegistro', {
                     method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -75,7 +75,7 @@
             let registro = document.getElementById('registro').value;
             let senha = document.getElementById('senha').value;
 
-            const requisicao = await fetch ('http://localhost:3000/usuario/login', {
+            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/login', {
                 method : 'POST',
                 credentials : 'include',
                 headers : {

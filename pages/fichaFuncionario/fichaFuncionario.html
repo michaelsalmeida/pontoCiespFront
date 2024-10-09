@@ -191,7 +191,7 @@
         async function puxarHorarios (registro, dataEscolhida) {
             try {        
         
-                    const requisicao = await fetch ('http://localhost:3000/usuario/horarios', {
+                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/horarios', {
                         method : 'POST',
                         headers : {
                             'Content-Type':'application/json',
@@ -213,7 +213,7 @@
         async function puxarBanco (registro) {
             // Puxar banco de horas
 
-            const requisicao = await fetch('http://localhost:3000/usuario/buscarBanco' , {
+            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)

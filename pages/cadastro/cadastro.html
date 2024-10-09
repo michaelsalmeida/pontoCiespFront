@@ -94,7 +94,7 @@
         }
 
         async function verificarSenhaMestre (senha) {
-            const requisicao = await fetch (`http://localhost:3000/usuario/verificarSenhaMestre`, {
+            const requisicao = await fetch (`https://pontociespapi.onrender.com/usuario/verificarSenhaMestre`, {
                     method: 'POST',
                     headers: {
                         'Content-Type':'application/json'
@@ -130,7 +130,7 @@
         }
 
         async function verificarCargoLogado () {
-            const requisicao = await fetch ('http://localhost:3000/usuario/verificarCargoLogado', {
+            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarCargoLogado', {
                         method : 'POST',
                         headers : {
                             'Content-Type':'application/json',
@@ -191,7 +191,7 @@
 
             console.log(dadosEnviados);
 
-            const requisicao = await fetch (`http://localhost:3000/usuario/cadastro`, {
+            const requisicao = await fetch (`https://pontociespapi.onrender.com/usuario/cadastro`, {
                 method: 'POST',
                 headers: {
                     'Content-Type':'application/json'
