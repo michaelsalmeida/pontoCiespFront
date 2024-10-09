@@ -23,7 +23,7 @@
     </div>
     
     <script type="module">
-        import { alertas, alertaPageAtual } from '../sweetalert.js';
+        import { alertas, alertaPageAtual } from './pages/sweetalert.js';
         
         window.addEventListener('load', async () => {
             alertas();
@@ -58,7 +58,7 @@
                     sessionStorage.setItem('mensagem', 'Primeiro acesso, realize o cadastro da sua senha');
                     localStorage.setItem('registro', registro);
     
-                    window.location.href = '../primeiroLogin/primeiroLogin.html';
+                    window.location.href = './primeiroLogin/primeiroLogin.html';
                 }
 
             }
@@ -94,7 +94,7 @@
 
                 document.cookie = `usuario=${resposta.cookie}; expires=${expires}; path=/;`;
 
-                window.location.href = '../resumoHoras/resumoHoras.html';
+                window.location.href = './resumoHoras/resumoHoras.html';
 
             } else {
                 alertaPageAtual(resposta.status, resposta.msg);
