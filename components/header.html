@@ -38,7 +38,7 @@ import { alertas, alertaPageAtual } from '../pages/sweetalert.js';
 
     document.getElementById('sairr').addEventListener('click', async () => {
       console.log('Entrei no logoff')
-      const requisicao = await fetch ('http://localhost:3000/usuario/logoff', {
+      const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/logoff', {
           method : 'POST',
           credentials : 'include',
           headers : {
