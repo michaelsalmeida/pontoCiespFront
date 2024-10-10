@@ -3,7 +3,7 @@ import { alertaPageAtual } from "../pages/sweetalert.js";
 async function sair () {
 
     console.log('Entrei no logoff')
-    const requisicao = await fetch ('http://localhost:3000/usuario/logoff', {
+    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/logoff', {
         method : 'POST',
         credentials : 'include',
         headers : {
@@ -33,7 +33,7 @@ async function sair () {
 }
 
 async function verificarLogoff () {
-    const requisicao = await fetch ('http://localhost:3000/usuario/verificarLogoff', {
+    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarLogoff', {
         method : 'POST',
         credentials : 'include',
         headers : {
@@ -56,7 +56,7 @@ async function verificarLogoff () {
 
 
 async function verificarCargoLogado () {
-    const requisicao = await fetch ('http://localhost:3000/usuario/verificarCargoLogado', {
+    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarCargoLogado', {
                 method : 'POST',
                 headers : {
                     'Content-Type':'application/json',
