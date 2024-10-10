@@ -24,7 +24,7 @@ async function sair () {
 
         document.cookie = `usuario=${resposta.cookie}; expires=${expires}; path=/;`;
 
-        window.location.href = '../login/index.html';
+        window.location.href = '../../index.html';
 
     } else {
         alertaPageAtual(resposta.status, resposta.msg);
