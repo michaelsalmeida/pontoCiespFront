@@ -35,6 +35,15 @@
     opacity: 0.85;
 }
 
+body {
+    display: flex; /* ou grid */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+
 #plogin {
     font-size: 30px;
     font-weight: bolder
