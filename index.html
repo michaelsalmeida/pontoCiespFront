@@ -106,6 +106,14 @@
             Logar();
         })
 
+        document.addEventListener("keydown", function(event) {
+            // Verificando se a tecla pressionada é ENTER
+            if (event.key === "Enter") {
+                event.preventDefault(); // Evita o envio do formulário, se houver
+                document.getElementById("entrar").click(); // Ativa o botão
+            }
+        });
+
 
     </script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
