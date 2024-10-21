@@ -120,7 +120,7 @@
             // Obter a data selecionada pelo usuário:
             const dataSelecionada = document.getElementById("data").value;
 
-            const requisicao = await fetch('http://localhost:3000/usuario/pegarDatas' , {
+            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/pegarDatas' , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)
@@ -164,7 +164,7 @@
         async function puxarBanco () {
             // Puxar banco de horas
 
-            const requisicao = await fetch('http://localhost:3000/usuario/buscarBanco' , {
+            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)
@@ -427,7 +427,7 @@
                     }
 
                     
-                    const requisicao = await fetch ('http://localhost:3000/usuario/lancarHora', {
+                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarHora', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -442,7 +442,7 @@
 
                     console.log('Indo para o banco', bancoAtual, situacaoBancoHoras);
 
-                    const requisicao2 = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                    const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
