@@ -65,7 +65,7 @@
             const data = new Date(dataRecebida);
 
             // Diminui 1 dia
-            data.setDate(data.getDate() - 1);
+            data.setDate(data.getDate() + 1);
 
             // Formata a nova data para string (opcional)
             const novaData = data.toISOString().split('T')[0];
