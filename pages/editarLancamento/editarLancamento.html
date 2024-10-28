@@ -42,19 +42,6 @@
                 </div>
         
             </div>
-            
-            <div id="divMedio"> 
-                <div id="divPequeno">
-                    <label for="idaAlmoco">IDA ALMOÇO *</label>
-                    <input type="time" name="idaAlmoco" id="idaAlmoco" class="inputCadastro" required disabled>
-                </div>
-                
-                <div id="divPequeno" class="divEsquerdo">
-                    <label for="voltaAlmoco">VOLTA ALMOÇO *</label>
-                    <input type="time" name="voltaAlmoco" id="voltaAlmoco" class="inputCadastro" required disabled> 
-
-                </div>
-            </div>
         
             <div id="divMedio">
                 <div id="divPequeno">
@@ -109,12 +96,10 @@
             const data = document.getElementById('data');
             const entrada = document.getElementById('horaEntrada');
             const saida = document.getElementById('horaSaida');
-            const idaAlmoco = document.getElementById('idaAlmoco');
-            const voltaAlmoco = document.getElementById('voltaAlmoco');
             const motivo = document.getElementById('motivoHorario');
             const descricao = document.getElementById('motivo');
 
-            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/puxarDadosHorario', {
+            const requisicao = await fetch ('http://localhost:3000/usuario/puxarDadosHorario', {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -134,8 +119,6 @@
             data.value = dataFormatada;
             entrada.value = resposta['dados'][0]['entrada'];
             saida.value = resposta['dados'][0]['saida'];
-            idaAlmoco.value = resposta['dados'][0]['idaIntervalo'];
-            voltaAlmoco.value = resposta['dados'][0]['voltaIntervalo'];
             motivo.value = resposta['dados'][0]['motivo'];
             descricao.value = resposta['dados'][0]['descricao'];
 
@@ -184,7 +167,7 @@
                     }
 
                     
-                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
+                    const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
