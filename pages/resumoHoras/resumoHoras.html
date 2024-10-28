@@ -55,6 +55,10 @@
         import { alertas, alertaPageAtual } from '../sweetalert.js';
         import { sair, verificarLogoff, verificarCargoLogado } from '../funcoes.js';
 
+        document.getElementById('sair').addEventListener('click', async () => {
+            sair();
+        });
+
         function concertarData (dataRecebida) {
 
             // Converte a string para um objeto Date
@@ -68,10 +72,6 @@
 
             return novaData;
         }
-
-        document.getElementById('sair').addEventListener('click', async () => {
-            sair();
-        });
 
         document.getElementById('baixarPDF').addEventListener('click', function() {
             const { jsPDF } = window.jspdf;
@@ -165,7 +165,7 @@
             window.location.href = '../editarLancamento/editarLancamento.html';
         }
 
-        function criarTabela(dados) {
+         function criarTabela(dados) {
             console.log(dados);
 
             var nome;
@@ -259,7 +259,7 @@
         async function puxarHorarios (dataEscolhida) {
             try {        
         
-                    const requisicao = await fetch ('http://localhost:3000/usuario/horarios', {
+                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/horarios', {
                         method : 'POST',
                         headers : {
                             'Content-Type':'application/json',
@@ -281,7 +281,7 @@
         async function puxarBanco () {
             // Puxar banco de horas
 
-            const requisicao = await fetch('http://localhost:3000/usuario/buscarBanco' , {
+            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)
