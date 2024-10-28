@@ -416,14 +416,15 @@
                 
 
                     var cargaParaBanco = cargaDiaria['banco'];
-
+                        
                     const dadosEnviados = {
                         data,
                         entrada,
                         saida,
                         cargaDiaria : cargaParaBanco,
                         motivo,
-                        descricao
+                        descricao,
+                        banco : (diaDebanco) ? 'true' : ''
                     }
 
                     
