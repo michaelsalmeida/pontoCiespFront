@@ -99,7 +99,7 @@
             const motivo = document.getElementById('motivoHorario');
             const descricao = document.getElementById('motivo');
 
-            const requisicao = await fetch ('http://localhost:3000/usuario/puxarDadosHorario', {
+            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/puxarDadosHorario', {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -167,7 +167,7 @@
                     }
 
                     
-                    const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
+                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
