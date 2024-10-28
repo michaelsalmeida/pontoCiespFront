@@ -55,6 +55,20 @@
         import { alertas, alertaPageAtual } from '../sweetalert.js';
         import { sair, verificarLogoff, verificarCargoLogado } from '../funcoes.js';
 
+        function concertarData (dataRecebida) {
+
+            // Converte a string para um objeto Date
+            const data = new Date(dataRecebida);
+
+            // Diminui 1 dia
+            data.setDate(data.getDate() - 1);
+
+            // Formata a nova data para string (opcional)
+            const novaData = data.toISOString().split('T')[0];
+
+            return novaData;
+        }
+
         document.getElementById('sair').addEventListener('click', async () => {
             sair();
         });
@@ -214,11 +228,15 @@
                 for (var i = 0; i < dados.length; i ++) {
                     const dataRetorno = new Date(dados[i]['data']);
 
-                    const soData = dataRetorno.toLocaleDateString('pt-BR');
+                    const dataArrumada = concertarData(dataRetorno);
 
-                    linha += `<tr><td><p>${soData}</p></td><td><p>${dados[i]['entrada']}</p></td><td><p>${dados[i]['saida']}</p></td><td><p>${dados[i]['idaIntervalo']}</p></td><td><p>${dados[i]['voltaIntervalo']}</p></td><td><p>${dados[i]['cargaDiaria']}</p></td><td><p>${dados[i]['motivo']}</p></td><td><p>${dados[i]['descricao']}</p></td><td><button id='edicao' class='puxarId' value = "${dados[i]['idCargaHoraria']}"><i class="fas fa-pencil-alt"></i></button></td></tr>
+                    console.log(`Data arrumada ${dataArrumada}`);
+
+                    // const soData = dataArrumada.toLocaleDateString('pt-BR');
+
+                    linha += `<tr><td><p>${dataArrumada}</p></td><td><p>${dados[i]['entrada']}</p></td><td><p>${dados[i]['saida']}</p></td><td><p>${dados[i]['idaIntervalo']}</p></td><td><p>${dados[i]['voltaIntervalo']}</p></td><td><p>${dados[i]['cargaDiaria']}</p></td><td><p>${dados[i]['motivo']}</p></td><td><p>${dados[i]['descricao']}</p></td><td><button id='edicao' class='puxarId' value = "${dados[i]['idCargaHoraria']}"><i class="fas fa-pencil-alt"></i></button></td></tr>
                     `
-                    linha2 += `<tr><td><p>${soData}</p></td><td><p>${dados[i]['entrada']}</p></td><td><p>${dados[i]['saida']}</p></td><td><p>${dados[i]['idaIntervalo']}</p></td><td><p>${dados[i]['voltaIntervalo']}</p></td><td><p>${dados[i]['cargaDiaria']}</p></td><td><p>${dados[i]['motivo']}</p></td><td><p>${dados[i]['descricao']}</p></td></tr>
+                    linha2 += `<tr><td><p>${dataArrumada}</p></td><td><p>${dados[i]['entrada']}</p></td><td><p>${dados[i]['saida']}</p></td><td><p>${dados[i]['idaIntervalo']}</p></td><td><p>${dados[i]['voltaIntervalo']}</p></td><td><p>${dados[i]['cargaDiaria']}</p></td><td><p>${dados[i]['motivo']}</p></td><td><p>${dados[i]['descricao']}</p></td></tr>
                     `
                 }
                 tabela = tabela + linha + '</table>';
@@ -241,7 +259,7 @@
         async function puxarHorarios (dataEscolhida) {
             try {        
         
-                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/horarios', {
+                    const requisicao = await fetch ('http://localhost:3000/usuario/horarios', {
                         method : 'POST',
                         headers : {
                             'Content-Type':'application/json',
@@ -263,7 +281,7 @@
         async function puxarBanco () {
             // Puxar banco de horas
 
-            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
+            const requisicao = await fetch('http://localhost:3000/usuario/buscarBanco' , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)
