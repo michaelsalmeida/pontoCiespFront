@@ -236,7 +236,11 @@
                 }
             }
 
-            const horaFormatada = (categoriaParcial == 'positivo') ? `${bancoHora}` : `-${bancoHora}`;
+            var horaFormatada = (categoriaParcial == 'positivo') ? `${bancoHora}` : `-${bancoHora}`;
+
+            if (horaFormatada.includes('--')) {
+                horaFormatada = horaFormatada.replace('--', '-');
+            }
 
             const horaParaEnviarAoBanco =  `${horaFormatada}:${bancoMinuto}`;
 
