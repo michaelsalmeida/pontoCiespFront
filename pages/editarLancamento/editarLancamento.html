@@ -32,12 +32,12 @@
             <div id="divMedio">
                 <div id="divPequeno">
                     <label for="horaEntrada">ENTRADA *</label>
-                    <input type="time" name="horaEntrada" id="horaEntrada" class="inputCadastro" required disabled>
+                    <input type="time" name="horaEntrada" id="horaEntrada" class="inputCadastro" required>
                 </div>
         
                 <div id="divPequeno" class="divEsquerdo">
                     <label for="horaSaida">SAIDA *</label>
-                    <input type="time" name="horaSaida" id="horaSaida" class="inputCadastro" required disabled>
+                    <input type="time" name="horaSaida" id="horaSaida" class="inputCadastro" required>
                     
                 </div>
         
@@ -90,6 +90,100 @@
             sair();
         })
 
+        async function somarHorarios(categoria, banco, horarioParaSubtrair) {
+            // Separa as horas e minutos de cada horário
+
+            var categoriaParcial = categoria;
+            
+            var [bancoHora, bancoMinuto] = banco.split(':').map(Number);
+            var [hora1, minuto1] = horarioParaSubtrair.split(':').map(Number);
+
+            minuto1 = minuto1 + (hora1 * 60);
+            
+            for (var x = 0; x < minuto1; x ++) {
+                
+
+                if (categoriaParcial == 'negativo') {
+                    if ((bancoHora < 0 && bancoMinuto > 0) || (bancoHora == 0 && bancoMinuto > 0)) {
+                        bancoMinuto -= 1
+
+                    } else if (bancoHora < 0 && bancoMinuto == 0) {
+                        bancoHora += 1;
+                        bancoMinuto = 59;
+                    } else if (bancoHora == 0  && bancoMinuto == 0) {
+                        categoriaParcial = 'positivo';
+                        bancoMinuto += 1;
+                    }
+
+                } else {
+                    if (bancoMinuto < 59) {
+                        bancoMinuto += 1;
+                    } else {
+                        bancoMinuto = 0;
+                        bancoHora += 1;
+                    }
+                }
+            }
+
+            const horaFormatada = (categoriaParcial == 'positivo') ? `${bancoHora}` : `-${bancoHora}`;
+
+            const horaParaEnviarAoBanco =  `${horaFormatada}:${bancoMinuto}`;
+
+            return {'situacao' : categoriaParcial, 'banco' : horaParaEnviarAoBanco};
+
+        }
+
+        async function subtrairHorarios(categoria, banco, horarioParaSubtrair) {
+            // Separa as horas e minutos de cada horário
+
+            var categoriaParcial = categoria;
+            
+            var [bancoHora, bancoMinuto] = banco.split(':').map(Number);
+            var [hora1, minuto1] = horarioParaSubtrair.split(':').map(Number);
+
+            console.log(bancoHora, bancoMinuto);
+
+            minuto1 = minuto1 + (hora1 * 60);
+            
+            for (var x = 0; x < minuto1; x ++) {
+
+                if (categoriaParcial == 'positivo') {
+                    if ((bancoHora > 0 && bancoMinuto > 0) || (bancoHora == 0 && bancoMinuto > 0)) {
+                        bancoMinuto -= 1
+
+                    } else if (bancoHora > 0 && bancoMinuto == 0) {
+                        bancoHora -= 1;
+                        bancoMinuto = 59;
+                        
+                    } else if (bancoHora == 0  && bancoMinuto == 0) {
+                        categoriaParcial = 'negativo';
+                        bancoMinuto += 1;
+                    }
+
+                } else {
+                    if (bancoMinuto < 59) {
+                        bancoMinuto += 1;
+                    } else {
+                        bancoMinuto = 0;
+                        bancoHora -= 1;
+                    }
+                }
+            }
+
+            console.log(bancoHora, bancoMinuto);
+
+            var horaFormatada = (categoriaParcial == 'positivo') ? `${bancoHora}` : `-${bancoHora}`;
+
+            if (horaFormatada.includes('--')) {
+                horaFormatada = horaFormatada.replace('--', '-');
+            }
+
+            const horaParaEnviarAoBanco =  `${horaFormatada}:${bancoMinuto}`;
+
+            return {'situacao' : categoriaParcial, 'banco' : horaParaEnviarAoBanco};
+
+        }
+
         async function puxarDadosDoHorario () {
             const idLancamento = sessionStorage.getItem('idLancamento');
 
@@ -99,7 +193,7 @@
             const motivo = document.getElementById('motivoHorario');
             const descricao = document.getElementById('motivo');
 
-            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/puxarDadosHorario', {
+            const requisicao = await fetch ('http://localhost:3000/usuario/puxarDadosHorario', {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -111,6 +205,7 @@
 
             const resposta = await requisicao.json();
 
+            sessionStorage.setItem('carga', resposta['dados'][0]['cargaDiaria']);
             
             const dataFormatada = resposta['dados'][0]['data'].split('T')[0];
             
@@ -122,6 +217,20 @@
             motivo.value = resposta['dados'][0]['motivo'];
             descricao.value = resposta['dados'][0]['descricao'];
 
+            const requisicao2 = await fetch ('http://localhost:3000/usuario/buscarBanco', {
+                method : 'POST',
+                    credentials : 'include',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        'Cookies' : decodeURIComponent(document.cookie)
+                },
+                body : JSON.stringify({idLancamento})
+            })
+
+            const resposta2 = await requisicao2.json();
+
+            sessionStorage.setItem('bancoAcumulado', resposta2['banco'][0]['horasAcumuladas']);
+            sessionStorage.setItem('situacao', resposta2['banco'][0]['situacaoBanco']);
             
         }
 
@@ -150,24 +259,195 @@
             console.log(document.getElementById('motivoHorario').value);
         })
 
-        
-        async function relancarHoras () {
+        async function reverterBanco () {
+            const cargahoraria = sessionStorage.getItem('carga');
+
+            if (cargahoraria < '09:00:00') {
+                const cargaFeita = sessionStorage.getItem('carga');
+                const banco = sessionStorage.getItem('bancoAcumulado');
+                const situacao = sessionStorage.getItem('situacao');
+
+
+                const horaSubtraidaAnteriormente = await subtrairHorarios('positivo', '09:00:00', cargaFeita);
+
+                console.log(horaSubtraidaAnteriormente);
+
+
+                const bancoRestaurado = await somarHorarios(situacao, banco, horaSubtraidaAnteriormente['banco']);
+
+                const bancoAtual = bancoRestaurado['banco'];
+
+                const situacaoBancoHoras = bancoRestaurado['situacao'];
+
+                console.log(`arrumei`, bancoRestaurado);
+
+                const requisicao = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                        method : 'POST',
+                        credentials : 'include',
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Cookies' : decodeURIComponent(document.cookie)
+                        },
+                        body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
+                    });
+
+
+                const resposta = await requisicao.json();
+
+                console.log(resposta);
+
+            } else if (cargahoraria > '09:00:00') {
+                const cargaFeita = sessionStorage.getItem('carga');
+                const banco = sessionStorage.getItem('bancoAcumulado');
+                const situacao = sessionStorage.getItem('situacao');
+
+
+                const horaSubtraidaAnteriormente = await subtrairHorarios('positivo', cargaFeita, '09:00:00');
+
+                console.log(horaSubtraidaAnteriormente);
+
+
+                const bancoRestaurado = await subtrairHorarios(situacao, banco, horaSubtraidaAnteriormente['banco']);
+
+                const bancoAtual = bancoRestaurado['banco'];
+
+                const situacaoBancoHoras = bancoRestaurado['situacao'];
+
+                console.log(`arrumei`, bancoRestaurado);
+
+                const requisicao = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                        method : 'POST',
+                        credentials : 'include',
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Cookies' : decodeURIComponent(document.cookie)
+                        },
+                        body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
+                    });
+
+
+                const resposta = await requisicao.json();
+
+                console.log(resposta);
+            }
+            
+        }
+
+        async function lancarHoras (diaDeBanco) {
+
+            await reverterBanco();
+
+            const data = document.getElementById('data').value;
+            const entrada = document.getElementById('horaEntrada').value;
+            const saida = document.getElementById('horaSaida').value;
             const motivo = document.getElementById('motivoHorario').value;
             const descricao = document.getElementById('motivo').value;
             const idLancamento = sessionStorage.getItem('idLancamento');
+            // flags para saber se vai ter banco de horas para adicionar ao banco
 
-            if (motivo != '#' && descricao != '') {
+            // flag para saber se a pessoa passou das 9 horas trabalhadas no dia
+            var passouHorarioNormal = false;
+
+            // flag para saber se a pessoa fez uma carga horária menor a exigida
+            var faltouCargaHoraria = false;
+
+            // carga horária em string
+            const cargaDiaria = await subtrairHorarios('positivo', saida, entrada);
+
+           
+
+            // separando as horas dos minutos e transformando cada um em number
+            const [horas, minutos] = cargaDiaria['banco'].split(':').map(Number);
+        
+
+            if(horas > 9 || (horas === 9 && minutos > 0)) {            
+                passouHorarioNormal = true;
+
+            } else if (horas < 9) {
+                faltouCargaHoraria = true;
+            }
+        
+
+            if (data != '' && entrada != '' && saida != '' && motivo != '#' && descricao != '') {
+
+                const puxarBancoDeHoras = await removerSegundos();
+
+                var bancoAtual = puxarBancoDeHoras.hora;
+
+                var situacaoBancoHoras = puxarBancoDeHoras.situacao;
 
                 try {
-                    
+    
+                    if (passouHorarioNormal) {
+                        var [horaCarga, minutoCarga] = cargaDiaria['banco'].split(':').map(Number);
+
+                        var situacaoCargaHoraria = ((horaCarga > 9) || (horaCarga == 9 && minutoCarga > 0)) ? 'negativo' : 'positivo';
+                        // Pega as horas escedidas na carga horária.
+                        const horaAmais = await subtrairHorarios('positivo', cargaDiaria.banco, '09:00');
+    
+                        // Pega a quantidade de horas já acumuladas no banco de dados
+                        // const bancoAtual = await removerSegundos(); 
+                        
+                        const [horaBanco, minutoBanco] = bancoAtual.split(':').map(Number);
+    
+                        // Verifica se as horas acumuladas no banco já estão no limide e 40
+                        if(horaBanco < 40) {
+                            
+                            const horaParaBanco = await somarHorarios(situacaoBancoHoras, bancoAtual, horaAmais.banco);
+
+                            bancoAtual = horaParaBanco.banco;
+
+                            situacaoBancoHoras = horaParaBanco.situacao;
+                            
+                        }
+                    } 
+
+  
+                    if (faltouCargaHoraria) {
+
+                        if (diaDeBanco == true) {
+
+                            console.log(situacaoBancoHoras, bancoAtual);
+
+                            horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, '07:30');
+
+                            bancoAtual = horaParaBanco.banco;
+
+                            situacaoBancoHoras = horaParaBanco.situacao;
+
+                            console.log(situacaoBancoHoras);
+
+                        } else {
+
+                            const tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
+    
+                            var horaParaBanco;
+                            
+                            horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
+    
+                            bancoAtual = horaParaBanco.banco;
+    
+                            situacaoBancoHoras = horaParaBanco.situacao;
+                        }
+
+    
+                    }
+                
+
+                    var cargaParaBanco = cargaDiaria['banco'];
+
                     const dadosEnviados = {
                         idLancamento,
+                        data,
+                        entrada,
+                        saida,
+                        cargaDiaria : cargaParaBanco,
                         motivo,
                         descricao
                     }
 
                     
-                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
+                    const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -180,27 +460,77 @@
                     const resposta = await requisicao.json();
 
 
+                    console.log('Indo para o banco', bancoAtual, situacaoBancoHoras);
+
+                    const requisicao2 = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                        method : 'POST',
+                        credentials : 'include',
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Cookies' : decodeURIComponent(document.cookie)
+                        },
+                        body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
+                    });
+
+
+                    const resposta2 = await requisicao2.json();
+
+
                     sessionStorage.setItem('status', resposta.status);
                     sessionStorage.setItem('mensagem', resposta.msg);
         
-                    if (resposta.status == 'success') {
-                        window.location.href = '../resumoHoras/resumoHoras.html';
+                    if (resposta.status == 'success' && resposta2.status == 'success') {
+                        // window.location.href = '../resumoHoras/resumoHoras.html';
                     } else {
                         alertas();
                     }
 
                 } catch (error) {
-                    console.log
-                }
+                    console.log(error)
+                } 
                      
             } else {
-                alertaPageAtual('error', 'Preencha todos os campos');
+                alertaPageAtual('error', 'Preencha todos os campos')
             }
 
         } 
 
+        async function puxarBanco () {
+            // Puxar banco de horas
+
+            const requisicao = await fetch('http://localhost:3000/usuario/buscarBanco' , {
+                    method : 'POST',
+                    headers : {
+                        'Cookies' : decodeURIComponent(document.cookie)
+                    }
+                });
+
+                const resposta = await requisicao.json();
+
+                return { 'horas' : resposta['banco'][0]['horasAcumuladas'], 'situacao' : resposta['banco'][0]['situacaoBanco'] } ;
+        }
+
+        async function removerSegundos () {
+            const horario = await puxarBanco();
+
+            const hora = horario['horas'].toString();
+
+            // Divide a string em um array usando ":" como separador
+            const partes = hora.split(":");
+
+            // Remove o último elemento do array (os segundos)
+            partes.pop();
+
+            // Junta o array novamente usando ":" como separador
+            const horaSemSegundos = partes.join(":");
+
+            return { 'hora' : horaSemSegundos, 'situacao' : horario.situacao };
+
+        }
+
+
         document.getElementById('lancarHora').addEventListener('click', () => {
-            relancarHoras();
+            lancarHoras('');
         })
     </script>
     
