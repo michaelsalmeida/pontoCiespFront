@@ -76,6 +76,8 @@
         document.getElementById('baixarPDF').addEventListener('click', function() {
             const { jsPDF } = window.jspdf;
 
+            const banco = removerSegundos();
+
             var tabela = document.getElementById('tabelaPdf');
 
             tabela.style.display = 'block';
@@ -106,6 +108,8 @@
                 const assinaturaY = position + imgHeight + 20; // Posição Y para os campos de assinatura
                 const assinaturaEspaco = 80; // Espaço entre os campos
                 const centralizarX = 105; // Posição X para centralizar os campos
+
+                pdf.text(`Banco : ${banco['banco']}`, centralizarX - 15, assinaturaY)
                 
                 // Desenha as linhas das assinaturas
                 pdf.line(centralizarX - 30, assinaturaY, centralizarX + 40, assinaturaY); // Linha 1
