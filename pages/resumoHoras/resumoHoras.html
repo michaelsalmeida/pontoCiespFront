@@ -107,9 +107,7 @@
                 // Adicionando campos para assinatura
                 const assinaturaY = position + imgHeight + 20; // Posição Y para os campos de assinatura
                 const assinaturaEspaco = 80; // Espaço entre os campos
-                const centralizarX = 105; // Posição X para centralizar os campos
-
-                pdf.text(`Banco : ${banco['banco']}`, centralizarX - 15, assinaturaY + 10)
+                const centralizarX = 105; // Posição X para centralizar os campo
                 
                 // Desenha as linhas das assinaturas
                 pdf.line(centralizarX - 30, assinaturaY, centralizarX + 40, assinaturaY); // Linha 1
