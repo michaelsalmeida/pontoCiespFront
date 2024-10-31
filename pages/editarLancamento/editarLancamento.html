@@ -193,7 +193,7 @@
             const motivo = document.getElementById('motivoHorario');
             const descricao = document.getElementById('motivo');
 
-            const requisicao = await fetch ('http://localhost:3000/usuario/puxarDadosHorario', {
+            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/puxarDadosHorario', {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -217,7 +217,7 @@
             motivo.value = resposta['dados'][0]['motivo'];
             descricao.value = resposta['dados'][0]['descricao'];
 
-            const requisicao2 = await fetch ('http://localhost:3000/usuario/buscarBanco', {
+            const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/buscarBanco', {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -281,7 +281,7 @@
 
                 console.log(`arrumei`, bancoRestaurado);
 
-                const requisicao = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -315,7 +315,7 @@
 
                 console.log(`arrumei`, bancoRestaurado);
 
-                const requisicao = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -447,7 +447,7 @@
                     }
 
                     
-                    const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
+                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -462,7 +462,7 @@
 
                     console.log('Indo para o banco', bancoAtual, situacaoBancoHoras);
 
-                    const requisicao2 = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                    const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -498,7 +498,7 @@
         async function puxarBanco () {
             // Puxar banco de horas
 
-            const requisicao = await fetch('http://localhost:3000/usuario/buscarBanco' , {
+            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)
