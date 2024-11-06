@@ -419,15 +419,18 @@
 
                         } else {
 
-                            const tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
-    
-                            var horaParaBanco;
-                            
-                            horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
-    
-                            bancoAtual = horaParaBanco.banco;
-    
-                            situacaoBancoHoras = horaParaBanco.situacao;
+                            const tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
+
+                            if (tempoFaltandoCargaHorariaNormal > '00:00') {
+
+                                var horaParaBanco;
+                                
+                                horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
+        
+                                bancoAtual = horaParaBanco.banco;
+        
+                                situacaoBancoHoras = horaParaBanco.situacao;
+                            }
                         }
 
     
