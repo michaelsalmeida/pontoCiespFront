@@ -25,7 +25,7 @@
     
             <div id="divSelect">
                 <label for="data">DATA *</label>
-                <input type="date" name="data" id="data" class="inputCadastro" required disabled>
+                <input type="date" name="data" id="data" class="inputCadastro" required>
                 <p id="labelDataInvalida" style="display: none;">data ja possui lançamento</p>
             </div>
         
@@ -193,7 +193,7 @@
             const motivo = document.getElementById('motivoHorario');
             const descricao = document.getElementById('motivo');
 
-            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/puxarDadosHorario', {
+            const requisicao = await fetch ('http://localhost:3000/usuario/puxarDadosHorario', {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -208,6 +208,8 @@
             sessionStorage.setItem('carga', resposta['dados'][0]['cargaDiaria']);
             
             const dataFormatada = resposta['dados'][0]['data'].split('T')[0];
+
+            sessionStorage.setItem('dataPuxada', dataFormatada);
             
             console.log(resposta);
 
@@ -217,7 +219,7 @@
             motivo.value = resposta['dados'][0]['motivo'];
             descricao.value = resposta['dados'][0]['descricao'];
 
-            const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/buscarBanco', {
+            const requisicao2 = await fetch ('http://localhost:3000/usuario/buscarBanco', {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -251,6 +253,9 @@
                 botaoPesquisa.style.display = 'block';
             }
 
+            const data = document.getElementById('data').value;
+
+            console.log(`Data puxada ${data}`);
             
             alertas();
         })
@@ -281,7 +286,7 @@
 
                 console.log(`arrumei`, bancoRestaurado);
 
-                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
+                const requisicao = await fetch ('http://localhost:3000/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -315,7 +320,7 @@
 
                 console.log(`arrumei`, bancoRestaurado);
 
-                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
+                const requisicao = await fetch ('http://localhost:3000/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -333,10 +338,31 @@
             
         }
 
+        async function deletarHora () {
+            const idCargaHoraria = sessionStorage.getItem('idLancamento');
+
+            const requisicao = await fetch ('http://localhost:3000/usuario/apagarHorario', {
+                        method : 'POST',
+                        credentials : 'include',
+                        headers : {
+                            'Content-Type' : 'application/json',
+                            'Cookies' : decodeURIComponent(document.cookie)
+                        },
+                        body : JSON.stringify({ idCargaHoraria })
+                    });
+
+
+            const resposta = await requisicao.json();
+
+            console.log(resposta);
+
+        }
+
         async function lancarHoras (diaDeBanco) {
-
+            
             await reverterBanco();
-
+            
+            const dataDaEdicao = sessionStorage.getItem('dataPuxada');
             const data = document.getElementById('data').value;
             const entrada = document.getElementById('horaEntrada').value;
             const saida = document.getElementById('horaSaida').value;
@@ -439,6 +465,8 @@
 
                     var cargaParaBanco = cargaDiaria['banco'];
 
+                    var resposta1;
+
                     const dadosEnviados = {
                         idLancamento,
                         data,
@@ -449,23 +477,44 @@
                         descricao
                     }
 
+                    if (data != dataDaEdicao) {
+
+                        deletarHora();
+
+                        const requisicao = await fetch ('http://localhost:3000/usuario/lancarHora', {
+                            method : 'POST',
+                            credentials : 'include',
+                            headers : {
+                                'Content-Type' : 'application/json',
+                                'Cookies' : decodeURIComponent(document.cookie)
+                            },
+                            body : JSON.stringify(dadosEnviados)
+                        });
+            
+                        resposta1 = await requisicao.json();
+
+
+                        console.log('Indo para o banco', bancoAtual, situacaoBancoHoras); 
+                    } else {
+                        const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
+                            method : 'POST',
+                            credentials : 'include',
+                            headers : {
+                                'Content-Type' : 'application/json',
+                                'Cookies' : decodeURIComponent(document.cookie)
+                            },
+                            body : JSON.stringify(dadosEnviados)
+                        });
+            
+                        resposta1 = await requisicao.json();
+    
+    
+                        console.log('Indo para o banco', bancoAtual, situacaoBancoHoras);
+
+                    }
                     
-                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
-                        method : 'POST',
-                        credentials : 'include',
-                        headers : {
-                            'Content-Type' : 'application/json',
-                            'Cookies' : decodeURIComponent(document.cookie)
-                        },
-                        body : JSON.stringify(dadosEnviados)
-                    });
-        
-                    const resposta = await requisicao.json();
 
-
-                    console.log('Indo para o banco', bancoAtual, situacaoBancoHoras);
-
-                    const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
+                    const requisicao2 = await fetch ('http://localhost:3000/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -477,12 +526,10 @@
 
 
                     const resposta2 = await requisicao2.json();
-
-
-                    sessionStorage.setItem('status', resposta.status);
-                    sessionStorage.setItem('mensagem', resposta.msg);
-        
-                    if (resposta.status == 'success' && resposta2.status == 'success') {
+                    
+                    if (resposta1.status == 'success' && resposta2.status == 'success') {
+                        sessionStorage.setItem('status', resposta1.status);
+                        sessionStorage.setItem('mensagem', resposta1.msg);
                         window.location.href = '../resumoHoras/resumoHoras.html';
                     } else {
                         alertas();
@@ -501,7 +548,7 @@
         async function puxarBanco () {
             // Puxar banco de horas
 
-            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
+            const requisicao = await fetch('http://localhost:3000/usuario/buscarBanco' , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)
