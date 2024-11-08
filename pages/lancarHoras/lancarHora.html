@@ -72,6 +72,10 @@
                 </div>
     
             </div>
+
+            <div id="divSelect">
+                <input type="checkbox" id="minhaCheckbox"> Fez horário de almoço (Só se preocupe em marcar se você sair cedo)
+            </div>
             
             <div id="divBotaoLancar" style="gap: 10px;">
                 <button id="lancarHora">LANÇAR HORA</button>
@@ -330,6 +334,9 @@
             const saida = document.getElementById('horaSaida').value;
             const motivo = document.getElementById('motivoHorario').value;
             const descricao = document.getElementById('motivo').value;
+
+            const checkbox = document.getElementById('minhaCheckbox');
+
             // flags para saber se vai ter banco de horas para adicionar ao banco
 
             // flag para saber se a pessoa passou das 9 horas trabalhadas no dia
@@ -404,18 +411,36 @@
 
                         } else {
 
-                            const tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
+                            var tempoFaltandoCargaHorariaNormal;
 
-                            if (tempoFaltandoCargaHorariaNormal > '00:00') {
+                            if (checkbox.checked) {
+                                console.log('Foi checkado')
+                                tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
 
                                 var horaParaBanco;
-                                
+                                    
                                 horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
         
                                 bancoAtual = horaParaBanco.banco;
         
                                 situacaoBancoHoras = horaParaBanco.situacao;
+
+                            } else {
+                                tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
+
+                                if (tempoFaltandoCargaHorariaNormal > '00:00') {
+    
+                                    var horaParaBanco;
+                                    
+                                    horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
+            
+                                    bancoAtual = horaParaBanco.banco;
+            
+                                    situacaoBancoHoras = horaParaBanco.situacao;
+                                }
                             }
+
+
                         }
 
     
@@ -468,7 +493,7 @@
                     sessionStorage.setItem('mensagem', resposta.msg);
         
                     if (resposta.status == 'success' && resposta2.status == 'success') {
-                        window.location.href = '../resumoHoras/resumoHoras.html';
+                        // window.location.href = '../resumoHoras/resumoHoras.html';
                     } else {
                         alertas();
                     }
@@ -519,3 +544,4 @@
     
 </body>
 </html>
+
