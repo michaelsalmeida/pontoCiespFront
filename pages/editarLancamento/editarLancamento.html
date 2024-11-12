@@ -449,10 +449,11 @@
 
                         } else {
 
-                             var tempoFaltandoCargaHorariaNormal;
+                            var tempoFaltandoCargaHorariaNormal;
 
                             if (checkbox.checked) {
                                 console.log('Foi checkado')
+                                
                                 tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
 
                                 var horaParaBanco;
@@ -555,7 +556,7 @@
                     }
 
                 } catch (error) {
-                    console.log(error)
+                    console.log(error);
                 } 
                      
             } else {
