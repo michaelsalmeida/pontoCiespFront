@@ -401,14 +401,16 @@
             if (data != '' && entrada != '' && saida != '' && motivo != '#' && descricao != '') {
 
                 const puxarBancoDeHoras = await removerSegundos();
-    
+
                 var bancoAtual = puxarBancoDeHoras.hora;
-    
+
                 var situacaoBancoHoras = puxarBancoDeHoras.situacao;
+
+                try {
     
                     if (passouHorarioNormal) {
                         var [horaCarga, minutoCarga] = cargaDiaria['banco'].split(':').map(Number);
-    
+
                         var situacaoCargaHoraria = ((horaCarga > 9) || (horaCarga == 9 && minutoCarga > 0)) ? 'negativo' : 'positivo';
                         // Pega as horas escedidas na carga horária.
                         const horaAmais = await subtrairHorarios('positivo', cargaDiaria.banco, '09:00');
@@ -422,38 +424,37 @@
                         if(horaBanco < 40) {
                             
                             const horaParaBanco = await somarHorarios(situacaoBancoHoras, bancoAtual, horaAmais.banco);
-    
+
                             bancoAtual = horaParaBanco.banco;
-    
+
                             situacaoBancoHoras = horaParaBanco.situacao;
                             
                         }
                     } 
-    
-    
+
+  
                     if (faltouCargaHoraria) {
-    
+
                         if (diaDeBanco == true) {
-    
+
                             console.log(situacaoBancoHoras, bancoAtual);
-    
+
                             horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, '07:30');
-    
+
                             bancoAtual = horaParaBanco.banco;
-    
+
                             situacaoBancoHoras = horaParaBanco.situacao;
-    
+
                             console.log(situacaoBancoHoras);
-    
+
                         } else {
-    
+
                             var tempoFaltandoCargaHorariaNormal;
-    
+
                             if (checkbox.checked) {
                                 console.log('Foi checkado')
-                                
                                 tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
-    
+
                                 var horaParaBanco;
                                     
                                 horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
@@ -461,10 +462,10 @@
                                 bancoAtual = horaParaBanco.banco;
         
                                 situacaoBancoHoras = horaParaBanco.situacao;
-    
+
                             } else {
                                 tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
-    
+
                                 if (tempoFaltandoCargaHorariaNormal > '00:00') {
     
                                     var horaParaBanco;
@@ -476,15 +477,16 @@
                                     situacaoBancoHoras = horaParaBanco.situacao;
                                 }
                             }
-    
+                        }
+
     
                     }
                 
-    
+
                     var cargaParaBanco = cargaDiaria['banco'];
-    
+
                     var resposta1;
-    
+
                     const dadosEnviados = {
                         idLancamento,
                         data,
@@ -494,12 +496,12 @@
                         motivo,
                         descricao
                     }
-    
+
                     if (data != dataDaEdicao) {
-    
+
                         deletarHora();
-    
-                        const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarHora', {
+
+                        const requisicao = await fetch ('http://localhost:3000/usuario/lancarHora', {
                             method : 'POST',
                             credentials : 'include',
                             headers : {
@@ -510,11 +512,11 @@
                         });
             
                         resposta1 = await requisicao.json();
-    
-    
+
+
                         console.log('Indo para o banco', bancoAtual, situacaoBancoHoras); 
                     } else {
-                        const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
+                        const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
                             method : 'POST',
                             credentials : 'include',
                             headers : {
@@ -528,11 +530,11 @@
     
     
                         console.log('Indo para o banco', bancoAtual, situacaoBancoHoras);
-    
+
                     }
                     
-    
-                    const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
+
+                    const requisicao2 = await fetch ('http://localhost:3000/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -541,8 +543,8 @@
                         },
                         body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
                     });
-    
-    
+
+
                     const resposta2 = await requisicao2.json();
                     
                     if (resposta1.status == 'success' && resposta2.status == 'success') {
@@ -552,10 +554,14 @@
                     } else {
                         alertas();
                     }
-                         
-                } else {
-                    alertaPageAtual('error', 'Preencha todos os campos')
-                }
+
+                } catch (error) {
+                    console.log(error)
+                } 
+                     
+            } else {
+                alertaPageAtual('error', 'Preencha todos os campos')
+            }
 
         } 
 
