@@ -71,6 +71,10 @@
                 </div>
     
             </div>
+
+            <div id="divSelect">
+                <input type="checkbox" id="minhaCheckbox"> Fez horário de almoço (Só se preocupe em marcar se você sair cedo)
+            </div>
             
             <div id="divBotaoLancar">
                 <button id="lancarHora">LANÇAR HORA</button>
@@ -445,19 +449,34 @@
 
                         } else {
 
-                            const tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
+                             var tempoFaltandoCargaHorariaNormal;
 
-                            if (tempoFaltandoCargaHorariaNormal > '00:00') {
+                            if (checkbox.checked) {
+                                console.log('Foi checkado')
+                                tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
 
                                 var horaParaBanco;
-                                
+                                    
                                 horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
         
                                 bancoAtual = horaParaBanco.banco;
         
                                 situacaoBancoHoras = horaParaBanco.situacao;
+
+                            } else {
+                                tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
+
+                                if (tempoFaltandoCargaHorariaNormal > '00:00') {
+    
+                                    var horaParaBanco;
+                                    
+                                    horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
+            
+                                    bancoAtual = horaParaBanco.banco;
+            
+                                    situacaoBancoHoras = horaParaBanco.situacao;
+                                }
                             }
-                        }
 
     
                     }
