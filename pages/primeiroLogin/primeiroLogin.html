@@ -33,6 +33,7 @@
     
     <script type="module">
         import { alertas, alertaPageAtual } from '../sweetalert.js';
+        import Global from '../../global.js';
         
         window.addEventListener('load', async () => {
             alertas();
@@ -45,7 +46,7 @@
 
             if (senha == confSenha) {
 
-                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/atualizarSenha', {
+                const requisicao = await fetch (`${Global}usuario/atualizarSenha`, {
                     method : 'POST',
                     credentials : 'include',
                     headers : {

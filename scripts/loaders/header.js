@@ -1,9 +1,10 @@
 import loader from './index.js'
 
 function loadHeader() {
-  const url = '../pontoCiespFront/components/header.html'
+  const urlDeploy = '../pontoCiespFront/components/header.html';
+  const urlLocal = '../components/header.html';
 
-  loader(url, function (response) {
+  loader(urlLocal, function (response) {
     const header = document.querySelector('header')
     header.innerHTML = response
     activeHeader()

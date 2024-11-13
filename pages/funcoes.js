@@ -1,9 +1,10 @@
 import { alertaPageAtual } from "../pages/sweetalert.js";
+import Global from '../global.js';
 
 async function sair () {
 
     console.log('Entrei no logoff')
-    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/logoff', {
+    const requisicao = await fetch (`${Global}usuario/logoff`, {
         method : 'POST',
         credentials : 'include',
         headers : {
@@ -33,7 +34,7 @@ async function sair () {
 }
 
 async function verificarLogoff () {
-    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarLogoff', {
+    const requisicao = await fetch (`${Global}usuario/verificarLogoff`, {
         method : 'POST',
         credentials : 'include',
         headers : {
@@ -56,7 +57,7 @@ async function verificarLogoff () {
 
 
 async function verificarCargoLogado () {
-    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarCargoLogado', {
+    const requisicao = await fetch (`${Global}usuario/verificarCargoLogado`, {
                 method : 'POST',
                 headers : {
                     'Content-Type':'application/json',

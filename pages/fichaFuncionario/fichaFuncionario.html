@@ -60,6 +60,7 @@
 
         import { alertas, alertaPageAtual } from '../sweetalert.js';
         import { sair, verificarLogoff, verificarCargoLogado } from '../funcoes.js';
+        import Global from '../../global.js';
 
         document.getElementById('baixarPDF').addEventListener('click', function() {
             const { jsPDF } = window.jspdf;
@@ -191,7 +192,7 @@
         async function puxarHorarios (registro, dataEscolhida) {
             try {        
         
-                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/horarios', {
+                    const requisicao = await fetch (`${Global}usuario/horarios`, {
                         method : 'POST',
                         headers : {
                             'Content-Type':'application/json',
@@ -213,7 +214,7 @@
         async function puxarBanco (registro) {
             // Puxar banco de horas
 
-            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
+            const requisicao = await fetch(`${Global}usuario/buscarBanco` , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)

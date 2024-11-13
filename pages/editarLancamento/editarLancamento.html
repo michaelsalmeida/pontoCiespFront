@@ -76,8 +76,9 @@
                 <input type="checkbox" id="minhaCheckbox"> Fez horário de almoço (Só se preocupe em marcar se você sair cedo)
             </div>
             
-            <div id="divBotaoLancar">
+            <div id="divBotaoLancar" style="gap: 10px;">
                 <button id="lancarHora">LANÇAR HORA</button>
+                <button id="apagarHora">APAGAR HORARIO</button>
         
             </div>
  
@@ -89,6 +90,7 @@
     <script type="module">
         import { alertas, alertaPageAtual } from '../sweetalert.js';
         import { sair, verificarLogoff, verificarCargoLogado } from '../funcoes.js';
+        import Global from '../../global.js';
 
         document.getElementById('sair').addEventListener('click', async () => {
             sair();
@@ -197,7 +199,7 @@
             const motivo = document.getElementById('motivoHorario');
             const descricao = document.getElementById('motivo');
 
-            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/puxarDadosHorario', {
+            const requisicao = await fetch (`${Global}usuario/puxarDadosHorario`, {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -223,7 +225,7 @@
             motivo.value = resposta['dados'][0]['motivo'];
             descricao.value = resposta['dados'][0]['descricao'];
 
-            const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/buscarBanco', {
+            const requisicao2 = await fetch (`${Global}usuario/buscarBanco`, {
                 method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -290,7 +292,7 @@
 
                 console.log(`arrumei`, bancoRestaurado);
 
-                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
+                const requisicao = await fetch (`${Global}usuario/lancarBanco`, {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -324,7 +326,7 @@
 
                 console.log(`arrumei`, bancoRestaurado);
 
-                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
+                const requisicao = await fetch (`${Global}usuario/lancarBanco`, {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -345,7 +347,7 @@
         async function deletarHora () {
             const idCargaHoraria = sessionStorage.getItem('idLancamento');
 
-            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/apagarHorario', {
+            const requisicao = await fetch (`${Global}usuario/apagarHorario`, {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -360,7 +362,22 @@
 
             console.log(resposta);
 
+            return resposta;
+
         }
+
+        document.getElementById('apagarHora').addEventListener('click', async () => {
+            reverterBanco();
+            const funcionou = await deletarHora();
+
+            if(funcionou['status'] == 'success') {
+
+                sessionStorage.setItem('status', funcionou.status);
+                sessionStorage.setItem('mensagem', funcionou.msg);
+
+                window.location.href = '../resumoHoras/resumoHoras.html';
+            }
+        })
 
         async function lancarHoras (diaDeBanco) {
             
@@ -501,7 +518,7 @@
 
                         deletarHora();
 
-                        const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarHora', {
+                        const requisicao = await fetch (`${Global}usuario/lancarHora`, {
                             method : 'POST',
                             credentials : 'include',
                             headers : {
@@ -516,7 +533,7 @@
 
                         console.log('Indo para o banco', bancoAtual, situacaoBancoHoras); 
                     } else {
-                        const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
+                        const requisicao = await fetch (`${Global}usuario/editarHorario`, {
                             method : 'POST',
                             credentials : 'include',
                             headers : {
@@ -534,7 +551,7 @@
                     }
                     
 
-                    const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
+                    const requisicao2 = await fetch (`${Global}usuario/lancarBanco`, {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
@@ -568,7 +585,7 @@
         async function puxarBanco () {
             // Puxar banco de horas
 
-            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
+            const requisicao = await fetch(`${Global}usuario/buscarBanco` , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)

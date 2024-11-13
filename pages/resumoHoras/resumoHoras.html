@@ -54,6 +54,7 @@
 
         import { alertas, alertaPageAtual } from '../sweetalert.js';
         import { sair, verificarLogoff, verificarCargoLogado } from '../funcoes.js';
+        import Global from '../../global.js';
 
         document.getElementById('sair').addEventListener('click', async () => {
             sair();
@@ -261,7 +262,7 @@
         async function puxarHorarios (dataEscolhida) {
             try {        
         
-                    const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/horarios', {
+                    const requisicao = await fetch (`${Global}usuario/horarios`, {
                         method : 'POST',
                         headers : {
                             'Content-Type':'application/json',
@@ -283,7 +284,7 @@
         async function puxarBanco () {
             // Puxar banco de horas
 
-            const requisicao = await fetch('https://pontociespapi.onrender.com/usuario/buscarBanco' , {
+            const requisicao = await fetch(`${Global}usuario/buscarBanco` , {
                     method : 'POST',
                     headers : {
                         'Cookies' : decodeURIComponent(document.cookie)

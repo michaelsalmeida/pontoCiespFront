@@ -24,6 +24,7 @@
     
     <script type="module">
         import { alertas, alertaPageAtual } from './pages/sweetalert.js';
+        import Global from './global.js';
         
         window.addEventListener('load', async () => {
             alertas();
@@ -39,7 +40,7 @@
             let registro = document.getElementById('registro').value;
 
             if (registro != '') {
-                const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarPrimeiroRegistro', {
+                const requisicao = await fetch (`${Global}usuario/verificarPrimeiroRegistro`, {
                     method : 'POST',
                     credentials : 'include',
                     headers : {
@@ -70,7 +71,7 @@
             let registro = document.getElementById('registro').value;
             let senha = document.getElementById('senha').value;
 
-            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/login', {
+            const requisicao = await fetch (`${Global}usuario/login`, {
                 method : 'POST',
                 credentials : 'include',
                 headers : {
