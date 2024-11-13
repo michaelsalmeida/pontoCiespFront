@@ -501,7 +501,7 @@
 
                         deletarHora();
 
-                        const requisicao = await fetch ('http://localhost:3000/usuario/lancarHora', {
+                        const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/lancarHora', {
                             method : 'POST',
                             credentials : 'include',
                             headers : {
@@ -516,7 +516,7 @@
 
                         console.log('Indo para o banco', bancoAtual, situacaoBancoHoras); 
                     } else {
-                        const requisicao = await fetch ('http://localhost:3000/usuario/editarHorario', {
+                        const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/editarHorario', {
                             method : 'POST',
                             credentials : 'include',
                             headers : {
@@ -534,7 +534,7 @@
                     }
                     
 
-                    const requisicao2 = await fetch ('http://localhost:3000/usuario/lancarBanco', {
+                    const requisicao2 = await fetch ('https://pontociespapi.onrender.com/usuario/lancarBanco', {
                         method : 'POST',
                         credentials : 'include',
                         headers : {
