@@ -4,7 +4,7 @@ function loadHeader() {
   const urlDeploy = '../pontoCiespFront/components/header.html';
   const urlLocal = '../components/header.html';
 
-  loader(urlLocal, function (response) {
+  loader(urlDeploy, function (response) {
     const header = document.querySelector('header')
     header.innerHTML = response
     activeHeader()
