@@ -9,7 +9,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url(/assets/background.jpg);
     background-repeat: no-repeat; /* Impede que a imagem se repita */
     background-position: center; /* Centraliza a imagem horizontal e verticalmente */
     background-attachment: fixed; /* Faz com que a imagem fique fixa na tela */
