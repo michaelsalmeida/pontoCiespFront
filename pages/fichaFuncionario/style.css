@@ -21,7 +21,6 @@
   }
 
 body {
-    background-image: url(/assets/background.jpg);
     background-repeat: no-repeat; /* Impede que a imagem se repita */
     background-position: center; /* Centraliza a imagem horizontal e verticalmente */
     background-position-y: 380px;
