@@ -212,6 +212,8 @@
             const resposta = await requisicao.json();
 
             sessionStorage.setItem('carga', resposta['dados'][0]['cargaDiaria']);
+
+            sessionStorage.setItem('almocoFeito', resposta['dados'][0]['idaIntervalo']);
             
             const dataFormatada = resposta['dados'][0]['data'].split('T')[0];
 
@@ -270,111 +272,21 @@
             console.log(document.getElementById('motivoHorario').value);
         })
 
-        async function reverterBanco (finalDeSemana) {
-            const cargahoraria = sessionStorage.getItem('carga');
+        async function reverterBanco (bancoAtual, situacaoAtual, tempoDaMudanca, situacaoDaMudanca) {
 
-            if (finalDeSemana) {
-
-                const bancoAcumu = sessionStorage.getItem('bancoAcumulado');
-
-                const situacao = sessionStorage.getItem('situacao');
-
-                const cargaFeitaEdicao = sessionStorage.getItem('carga');
-
-                const horaParaBanco = await subtrairHorarios(situacao, bancoAcumu, cargaFeitaEdicao);
-
-                const bancoAtual = horaParaBanco.banco;
-
-                const situacaoBancoHoras = horaParaBanco.situacao;
-
-
-                const requisicao = await fetch (`${Global}usuario/lancarBanco`, {
-                            method : 'POST',
-                            credentials : 'include',
-                            headers : {
-                                'Content-Type' : 'application/json',
-                                'Cookies' : decodeURIComponent(document.cookie)
-                            },
-                            body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
-                        });
-    
-    
-                const resposta = await requisicao.json();
-
-                console.log(resposta);
-
+            console.log('Dados da reversão', bancoAtual, situacaoAtual, tempoDaMudanca, situacaoDaMudanca);
+            
+            var bancoRevertido;
+            
+            if (situacaoDaMudanca == 'positivo') {
+                bancoRevertido = await subtrairHorarios(situacaoAtual, bancoAtual, tempoDaMudanca);
             } else {
-                if (cargahoraria < '09:00:00') {
-                    const cargaFeita = sessionStorage.getItem('carga');
-                    const banco = sessionStorage.getItem('bancoAcumulado');
-                    const situacao = sessionStorage.getItem('situacao');
-    
-    
-                    const horaSubtraidaAnteriormente = await subtrairHorarios('positivo', '09:00:00', cargaFeita);
-    
-                    console.log(horaSubtraidaAnteriormente);
-    
-    
-                    const bancoRestaurado = await somarHorarios(situacao, banco, horaSubtraidaAnteriormente['banco']);
-    
-                    const bancoAtual = bancoRestaurado['banco'];
-    
-                    const situacaoBancoHoras = bancoRestaurado['situacao'];
-    
-                    console.log(`arrumei`, bancoRestaurado);
-    
-                    const requisicao = await fetch (`${Global}usuario/lancarBanco`, {
-                            method : 'POST',
-                            credentials : 'include',
-                            headers : {
-                                'Content-Type' : 'application/json',
-                                'Cookies' : decodeURIComponent(document.cookie)
-                            },
-                            body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
-                        });
-    
-    
-                    const resposta = await requisicao.json();
-    
-                    console.log(resposta);
-    
-                } else if (cargahoraria > '09:00:00') {
-                    const cargaFeita = sessionStorage.getItem('carga');
-                    const banco = sessionStorage.getItem('bancoAcumulado');
-                    const situacao = sessionStorage.getItem('situacao');
-    
-    
-                    const horaSubtraidaAnteriormente = await subtrairHorarios('positivo', cargaFeita, '09:00:00');
-    
-                    console.log(horaSubtraidaAnteriormente);
-    
-    
-                    const bancoRestaurado = await subtrairHorarios(situacao, banco, horaSubtraidaAnteriormente['banco']);
-    
-                    const bancoAtual = bancoRestaurado['banco'];
-    
-                    const situacaoBancoHoras = bancoRestaurado['situacao'];
-    
-                    console.log(`arrumei`, bancoRestaurado);
-    
-                    const requisicao = await fetch (`${Global}usuario/lancarBanco`, {
-                            method : 'POST',
-                            credentials : 'include',
-                            headers : {
-                                'Content-Type' : 'application/json',
-                                'Cookies' : decodeURIComponent(document.cookie)
-                            },
-                            body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
-                        });
-    
-    
-                    const resposta = await requisicao.json();
-    
-                    console.log(resposta);
-                }
-                
-
+                bancoRevertido = await somarHorarios(situacaoAtual, bancoAtual, tempoDaMudanca);
             }
+            
+            console.log('Banco mudado', bancoRevertido);
+
+            return bancoRevertido;
 
         }
 
@@ -428,12 +340,39 @@
             }
         })
 
+        async function calcularDiferencaHorarios(horaInicial, horaFinal) {
+            // Divide as strings de hora em horas e minutos
+            const [horaInicialH, horaInicialM] = horaInicial.split(':').map(Number);
+            const [horaFinalH, horaFinalM] = horaFinal.split(':').map(Number);
+
+            // Cria objetos Date para os horários inicial e final
+            const dataInicial = new Date();
+            dataInicial.setHours(horaInicialH, horaInicialM, 0, 0);
+            const dataFinal = new Date();
+            dataFinal.setHours(horaFinalH, horaFinalM, 0, 0);
+
+            // Calcula a diferença em milissegundos
+            const diferencaEmMilissegundos = dataFinal - dataInicial;
+
+            // Converte a diferença para horas
+            const diferencaEmHoras = diferencaEmMilissegundos / (1000 * 60 * 60);
+
+            // Formata a diferença em horas para HH:MM
+            const horas = Math.floor(diferencaEmHoras);
+            const minutos = Math.floor((diferencaEmHoras - horas) * 60);
+            const resultado = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+
+            return resultado;
+        }
+
         async function lancarHoras (diaDeBanco) {
             
             const dataDaEdicao = sessionStorage.getItem('dataPuxada');
             const finalDeSemana = verificarDiaSemana(dataDaEdicao);
 
-            await reverterBanco(finalDeSemana);
+            const puxarBancoDeHorasAtual = await removerSegundos();
+
+            const puxarBancoDeHoras = await reverterBanco(puxarBancoDeHorasAtual.hora, puxarBancoDeHorasAtual.situacao, puxarBancoDeHorasAtual.tempoDaMudanca, puxarBancoDeHorasAtual.situacaoDaMudanca);
             
             const data = document.getElementById('data').value;
             const entrada = document.getElementById('horaEntrada').value;
@@ -473,11 +412,15 @@
 
             if (data != '' && entrada != '' && saida != '' && motivo != '#' && descricao != '') {
 
-                const puxarBancoDeHoras = await removerSegundos();
+                
 
-                var bancoAtual = puxarBancoDeHoras.hora;
+                var bancoAtual = puxarBancoDeHoras.banco;
 
                 var situacaoBancoHoras = puxarBancoDeHoras.situacao;
+
+                var tempoDaMudanca;
+
+                var situacaoDaMudanca;
 
                 try {
 
@@ -488,6 +431,10 @@
                         bancoAtual = horaParaBanco.banco;
     
                         situacaoBancoHoras = horaParaBanco.situacao;
+
+                        tempoDaMudanca = cargaDiaria['banco'];
+
+                        situacaoDaMudanca = 'positivo';
 
                         console.log('horas do final de semana', horaParaBanco);
 
@@ -514,6 +461,9 @@
     
                                 situacaoBancoHoras = horaParaBanco.situacao;
                                 
+                                tempoDaMudanca = horaAmais.banco;
+
+                                situacaoDaMudanca = 'positivo';
                             }
                         } 
     
@@ -529,6 +479,10 @@
                                 bancoAtual = horaParaBanco.banco;
     
                                 situacaoBancoHoras = horaParaBanco.situacao;
+
+                                tempoDaMudanca = '07:30';
+
+                                situacaoDaMudanca = 'negativo';
     
                                 console.log(situacaoBancoHoras);
     
@@ -538,7 +492,7 @@
     
                                 if (checkbox.checked) {
                                     console.log('Foi checkado')
-                                    tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
+                                    tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
     
                                     var horaParaBanco;
                                         
@@ -547,9 +501,13 @@
                                     bancoAtual = horaParaBanco.banco;
             
                                     situacaoBancoHoras = horaParaBanco.situacao;
+
+                                    tempoDaMudanca = tempoFaltandoCargaHorariaNormal;
+
+                                    situacaoDaMudanca = 'negativo';
     
                                 } else {
-                                    tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
+                                    tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
     
                                     if (tempoFaltandoCargaHorariaNormal > '00:00') {
         
@@ -560,6 +518,10 @@
                                         bancoAtual = horaParaBanco.banco;
                 
                                         situacaoBancoHoras = horaParaBanco.situacao;
+
+                                        tempoDaMudanca = tempoFaltandoCargaHorariaNormal;
+
+                                        situacaoDaMudanca = 'negativo';
                                     }
                                 }
                             }
@@ -581,7 +543,9 @@
                         saida,
                         cargaDiaria : cargaParaBanco,
                         motivo,
-                        descricao
+                        descricao,
+                        banco: (diaDeBanco) ? 'true' : '',
+                        almocoFeito: checkbox.checked
                     }
 
                     if (data != dataDaEdicao) {
@@ -628,7 +592,7 @@
                             'Content-Type' : 'application/json',
                             'Cookies' : decodeURIComponent(document.cookie)
                         },
-                        body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
+                        body : JSON.stringify({ bancoAtual, situacaoBancoHoras, tempoDaMudanca, situacaoDaMudanca  })
                     });
 
 
@@ -664,7 +628,7 @@
 
                 const resposta = await requisicao.json();
 
-                return { 'horas' : resposta['banco'][0]['horasAcumuladas'], 'situacao' : resposta['banco'][0]['situacaoBanco'] } ;
+                return { 'horas' : resposta['banco'][0]['horasAcumuladas'], 'situacao' : resposta['banco'][0]['situacaoBanco'], 'tempoDaMudanca' : resposta['banco'][0]['tempoDaMudanca'], 'situacaoDaMudanca' : resposta['banco'][0]['situacaoDaMudanca'] } ;
         }
 
         async function removerSegundos () {
@@ -681,7 +645,7 @@
             // Junta o array novamente usando ":" como separador
             const horaSemSegundos = partes.join(":");
 
-            return { 'hora' : horaSemSegundos, 'situacao' : horario.situacao };
+            return { 'hora' : horaSemSegundos, 'situacao' : horario.situacao, 'tempoDaMudanca' : horario.tempoDaMudanca, 'situacaoDaMudanca' : horario.situacaoDaMudanca };
 
         }
 

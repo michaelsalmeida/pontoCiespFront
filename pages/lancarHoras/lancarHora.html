@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="../../global.css">
     <title>Document</title>
 </head>
+
 <body>
 
     <header></header>
@@ -16,74 +18,76 @@
     <div id="botaoLogoff">
         <button id="sair">Logoff</button>
     </div>
-    
+
     <div>
         <h1>Lançamento de Horas</h1>
     </div>
 
     <div id="containerLancamento">
-    
-            <div id="divSelect">
-                <label for="data">DATA *</label>
-                <input type="date" name="data" id="data" class="inputCadastro" required>
-                <p id="labelDataInvalida" style="display: none;">data ja possui lançamento</p>
-            </div>
-        
-            <div id="divMedio">
-                <div id="divPequeno">
-                    <label for="horaEntrada">ENTRADA *</label>
-                    <input type="time" name="horaEntrada" id="horaEntrada" class="inputCadastro" required>
-                </div>
-        
-                <div id="divPequeno" class="divEsquerdo">
-                    <label for="horaSaida">SAIDA *</label>
-                    <input type="time" name="horaSaida" id="horaSaida" class="inputCadastro" required>
-                    
-                </div>
-        
-            </div>
-            
-        
-            <div id="divMedio">
-                <div id="divPequeno">
 
-                    <label for="motivoHorario">MOTIVO *</label>
-        
-                    <select id="motivoHorario" class="inputMaior">
-                        <option value="#" selected>Escolha um motivo</option>
-                        <option value="00 - Jornada Normal">00 - Jornada Normal</option>
-                        <option value="01 - Motivo Particular">01 - Motivo Particular</option>
-                        <option value="02 - Serviço Externo">02 - Serviço Externo</option>
-                        <option value="03 - Banco de Horas">03 - Banco de Horas</option>
-                        <option value="04 - Atestado Médico">04 - Atestado Médico</option>
-                        <option value="05 - Férias">05 - Férias</option>
-                        <option value="06 - Licença Maternidade">06 - Licença Maternidade</option>
-                        <option value="07 - Licença Paternidade">07 - Licença Paternidade</option>
-                        <option value="08 - Outros">08 - Outros</option>
-                    </select>
+        <div id="divSelect">
+            <label for="data">DATA *</label>
+            <input type="date" name="data" id="data" class="inputCadastro" required>
+            <p id="labelDataInvalida" style="display: none;">data ja possui lançamento</p>
+        </div>
 
-                </div>
-
-                <div id="divPequeno" class="divEsquerdo">
-                    <label for="motivo">DESCREVA *</label>
-            
-                    <input type="text" name="motivo" id="motivo" class="inputMaior" placeholder="Descreva o motivo" required>
-
-                </div>
-    
+        <div id="divMedio">
+            <div id="divPequeno">
+                <label for="horaEntrada">ENTRADA *</label>
+                <input type="time" name="horaEntrada" id="horaEntrada" class="inputCadastro" required>
             </div>
 
-            <div id="divSelect">
-                <input type="checkbox" id="minhaCheckbox"> Fez horário de almoço (Só se preocupe em marcar se você sair cedo)
+            <div id="divPequeno" class="divEsquerdo">
+                <label for="horaSaida">SAIDA *</label>
+                <input type="time" name="horaSaida" id="horaSaida" class="inputCadastro" required>
+
             </div>
-            
-            <div id="divBotaoLancar" style="gap: 10px;">
-                <button id="lancarHora">LANÇAR HORA</button>
-                <button id="diaDeBanco">DIA DE BANCO</button>
-        
+
+        </div>
+
+
+        <div id="divMedio">
+            <div id="divPequeno">
+
+                <label for="motivoHorario">MOTIVO *</label>
+
+                <select id="motivoHorario" class="inputMaior">
+                    <option value="#" selected>Escolha um motivo</option>
+                    <option value="00 - Jornada Normal">00 - Jornada Normal</option>
+                    <option value="01 - Motivo Particular">01 - Motivo Particular</option>
+                    <option value="02 - Serviço Externo">02 - Serviço Externo</option>
+                    <option value="03 - Banco de Horas">03 - Banco de Horas</option>
+                    <option value="04 - Atestado Médico">04 - Atestado Médico</option>
+                    <option value="05 - Férias">05 - Férias</option>
+                    <option value="06 - Licença Maternidade">06 - Licença Maternidade</option>
+                    <option value="07 - Licença Paternidade">07 - Licença Paternidade</option>
+                    <option value="08 - Outros">08 - Outros</option>
+                </select>
+
             </div>
- 
-     </div>
+
+            <div id="divPequeno" class="divEsquerdo">
+                <label for="motivo">DESCREVA *</label>
+
+                <input type="text" name="motivo" id="motivo" class="inputMaior" placeholder="Descreva o motivo"
+                    required>
+
+            </div>
+
+        </div>
+
+        <div id="divSelect">
+            <input type="checkbox" id="minhaCheckbox"> Fez horário de almoço (Só se preocupe em marcar se você sair
+            cedo)
+        </div>
+
+        <div id="divBotaoLancar" style="gap: 10px;">
+            <button id="lancarHora">LANÇAR HORA</button>
+            <button id="diaDeBanco">DIA DE BANCO</button>
+
+        </div>
+
+    </div>
 
     </div>
 
@@ -109,7 +113,7 @@
                 botaoCadastro.style.display = 'block';
             }
 
-            
+
             alertas();
         })
 
@@ -121,7 +125,7 @@
         function verificarDiaSemana(data) {
             // Cria um objeto Date a partir da data fornecida
             const dia = new Date(data);
-            
+
             // Obtém o dia da semana (0 = domingo, 6 = sábado)
             const diaDaSemana = dia.getDay();
 
@@ -137,11 +141,11 @@
             // Obter a data selecionada pelo usuário:
             const dataSelecionada = document.getElementById("data").value;
 
-            const requisicao = await fetch(`${Global}usuario/pegarDatas` , {
-                    method : 'POST',
-                    headers : {
-                        'Cookies' : decodeURIComponent(document.cookie)
-                    }
+            const requisicao = await fetch(`${Global}usuario/pegarDatas`, {
+                method: 'POST',
+                headers: {
+                    'Cookies': decodeURIComponent(document.cookie)
+                }
             });
 
             const resposta = await requisicao.json();
@@ -163,7 +167,7 @@
                     // Limpar o input (opcional):
                     document.getElementById("data").value = "";
                 } else {
-                    
+
                 }
             }
 
@@ -178,19 +182,19 @@
             }
         }
 
-        async function puxarBanco () {
+        async function puxarBanco() {
             // Puxar banco de horas
 
-            const requisicao = await fetch(`${Global}usuario/buscarBanco` , {
-                    method : 'POST',
-                    headers : {
-                        'Cookies' : decodeURIComponent(document.cookie)
-                    }
-                });
+            const requisicao = await fetch(`${Global}usuario/buscarBanco`, {
+                method: 'POST',
+                headers: {
+                    'Cookies': decodeURIComponent(document.cookie)
+                }
+            });
 
-                const resposta = await requisicao.json();
+            const resposta = await requisicao.json();
 
-                return { 'horas' : resposta['banco'][0]['horasAcumuladas'], 'situacao' : resposta['banco'][0]['situacaoBanco'] } ;
+            return { 'horas': resposta['banco'][0]['horasAcumuladas'], 'situacao': resposta['banco'][0]['situacaoBanco'] };
         }
 
         async function calcularDiferencaHorarios(horaInicial, horaFinal) {
@@ -222,14 +226,14 @@
             // Separa as horas e minutos de cada horário
 
             var categoriaParcial = categoria;
-            
+
             var [bancoHora, bancoMinuto] = banco.split(':').map(Number);
             var [hora1, minuto1] = horarioParaSubtrair.split(':').map(Number);
 
             minuto1 = minuto1 + (hora1 * 60);
-            
-            for (var x = 0; x < minuto1; x ++) {
-                
+
+            for (var x = 0; x < minuto1; x++) {
+
 
                 if (categoriaParcial == 'negativo') {
                     if ((bancoHora < 0 && bancoMinuto > 0) || (bancoHora == 0 && bancoMinuto > 0)) {
@@ -238,7 +242,7 @@
                     } else if (bancoHora < 0 && bancoMinuto == 0) {
                         bancoHora += 1;
                         bancoMinuto = 59;
-                    } else if (bancoHora == 0  && bancoMinuto == 0) {
+                    } else if (bancoHora == 0 && bancoMinuto == 0) {
                         categoriaParcial = 'positivo';
                         bancoMinuto += 1;
                     }
@@ -259,9 +263,9 @@
                 horaFormatada = horaFormatada.replace('--', '-');
             }
 
-            const horaParaEnviarAoBanco =  `${horaFormatada}:${bancoMinuto}`;
+            const horaParaEnviarAoBanco = `${horaFormatada}:${bancoMinuto}`;
 
-            return {'situacao' : categoriaParcial, 'banco' : horaParaEnviarAoBanco};
+            return { 'situacao': categoriaParcial, 'banco': horaParaEnviarAoBanco };
 
         }
 
@@ -269,13 +273,13 @@
             // Separa as horas e minutos de cada horário
 
             var categoriaParcial = categoria;
-            
+
             var [bancoHora, bancoMinuto] = banco.split(':').map(Number);
             var [hora1, minuto1] = horarioParaSubtrair.split(':').map(Number);
 
             minuto1 = minuto1 + (hora1 * 60);
-            
-            for (var x = 0; x < minuto1; x ++) {
+
+            for (var x = 0; x < minuto1; x++) {
 
                 if (categoriaParcial == 'positivo') {
                     if ((bancoHora > 0 && bancoMinuto > 0) || (bancoHora == 0 && bancoMinuto > 0)) {
@@ -284,8 +288,8 @@
                     } else if (bancoHora > 0 && bancoMinuto == 0) {
                         bancoHora -= 1;
                         bancoMinuto = 59;
-                        
-                    } else if (bancoHora == 0  && bancoMinuto == 0) {
+
+                    } else if (bancoHora == 0 && bancoMinuto == 0) {
                         categoriaParcial = 'negativo';
                         bancoMinuto += 1;
                     }
@@ -305,9 +309,9 @@
                 horaFormatada = horaFormatada.replace('--', '-');
             }
 
-            const horaParaEnviarAoBanco =  `${horaFormatada}:${bancoMinuto}`;
+            const horaParaEnviarAoBanco = `${horaFormatada}:${bancoMinuto}`;
 
-            return {'situacao' : categoriaParcial, 'banco' : horaParaEnviarAoBanco};
+            return { 'situacao': categoriaParcial, 'banco': horaParaEnviarAoBanco };
 
         }
 
@@ -334,9 +338,9 @@
 
             // Formata a saída
             return `${horasRestantes}:${minutosRestantes.toString().padStart(2, '0')}`;
-            }
-        
-        async function lancarHoras (diaDeBanco) {
+        }
+
+        async function lancarHoras(diaDeBanco) {
 
             const botaoLancar = document.getElementById('lancarHora');
 
@@ -365,15 +369,15 @@
 
             // separando as horas dos minutos e transformando cada um em number
             const [horas, minutos] = cargaDiaria['banco'].split(':').map(Number);
-        
 
-            if(horas > 9 || (horas === 9 && minutos > 0)) {            
+
+            if (horas > 9 || (horas === 9 && minutos > 0)) {
                 passouHorarioNormal = true;
 
             } else if (horas < 9) {
                 faltouCargaHoraria = true;
             }
-        
+
 
             if (data != '' && entrada != '' && saida != '' && motivo != '#' && descricao != '') {
 
@@ -383,14 +387,22 @@
 
                 var situacaoBancoHoras = puxarBancoDeHoras.situacao;
 
+                var tempoDaMudanca;
+
+                var situacaoDaMudanca;
+
                 try {
 
                     if (finalDeSemana) {
                         const horaParaBanco = await somarHorarios(situacaoBancoHoras, bancoAtual, cargaDiaria['banco']);
 
                         bancoAtual = horaParaBanco.banco;
-    
+
                         situacaoBancoHoras = horaParaBanco.situacao;
+
+                        tempoDaMudanca = cargaDiaria['banco'];
+
+                        situacaoDaMudanca = 'positivo';
 
                         console.log('horas do final de semana', horaParaBanco);
 
@@ -398,114 +410,131 @@
 
                         if (passouHorarioNormal) {
                             var [horaCarga, minutoCarga] = cargaDiaria['banco'].split(':').map(Number);
-    
+
                             var situacaoCargaHoraria = ((horaCarga > 9) || (horaCarga == 9 && minutoCarga > 0)) ? 'negativo' : 'positivo';
                             // Pega as horas escedidas na carga horária.
                             const horaAmais = await subtrairHorarios('positivo', cargaDiaria.banco, '09:00');
-        
+
                             // Pega a quantidade de horas já acumuladas no banco de dados
                             // const bancoAtual = await removerSegundos(); 
-                            
+
                             const [horaBanco, minutoBanco] = bancoAtual.split(':').map(Number);
-        
+
                             // Verifica se as horas acumuladas no banco já estão no limide e 40
-                            if(horaBanco < 40) {
-                                
+                            if (horaBanco < 40) {
+
                                 const horaParaBanco = await somarHorarios(situacaoBancoHoras, bancoAtual, horaAmais.banco);
-    
+
                                 bancoAtual = horaParaBanco.banco;
-    
+
                                 situacaoBancoHoras = horaParaBanco.situacao;
-                                
+
+                                tempoDaMudanca = horaAmais.banco;
+
+                                situacaoDaMudanca = 'positivo';
+
                             }
-                        } 
-    
-      
+                        }
+
+
                         if (faltouCargaHoraria) {
-    
+
                             if (diaDeBanco == true) {
 
-    
+
                                 horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, '07:30');
-    
+
                                 bancoAtual = horaParaBanco.banco;
-    
+
                                 situacaoBancoHoras = horaParaBanco.situacao;
 
-    
+                                tempoDaMudanca = '07:30';
+
+                                situacaoDaMudanca = 'negativo';
+
+
                             } else {
-    
+
                                 var tempoFaltandoCargaHorariaNormal;
-    
+
                                 if (checkbox.checked) {
-                            
-                                    tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
-    
-                                    var horaParaBanco;
-                                        
-                                    horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
-            
-                                    bancoAtual = horaParaBanco.banco;
-            
-                                    situacaoBancoHoras = horaParaBanco.situacao;
-    
-                                } else {
+
                                     tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '7:30');
-    
+
+                                    var horaParaBanco;
+
+                                    horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
+
+                                    bancoAtual = horaParaBanco.banco;
+
+                                    situacaoBancoHoras = horaParaBanco.situacao;
+
+                                    tempoDaMudanca = tempoFaltandoCargaHorariaNormal;
+
+                                    situacaoDaMudanca = 'negativo';
+
+                                } else {
+                                    tempoFaltandoCargaHorariaNormal = await calcularDiferencaHorarios(cargaDiaria['banco'], '9:00');
+
                                     if (tempoFaltandoCargaHorariaNormal > '00:00') {
-        
+
                                         var horaParaBanco;
-                                        
+
                                         horaParaBanco = await subtrairHorarios(situacaoBancoHoras, bancoAtual, tempoFaltandoCargaHorariaNormal);
-                
+
                                         bancoAtual = horaParaBanco.banco;
-                
+
                                         situacaoBancoHoras = horaParaBanco.situacao;
+
+                                        tempoDaMudanca = tempoFaltandoCargaHorariaNormal;
+
+                                        situacaoDaMudanca = 'negativo';
                                     }
                                 }
-    
-    
-                            }
-                    }
-    
 
-    
+
+                            }
+                        }
+
+
+
                     }
-                
+
 
                     var cargaParaBanco = cargaDiaria['banco'];
-                        
+
                     const dadosEnviados = {
                         data,
                         entrada,
                         saida,
-                        cargaDiaria : cargaParaBanco,
+                        cargaDiaria: cargaParaBanco,
                         motivo,
                         descricao,
-                        banco : (diaDeBanco) ? 'true' : ''
+                        banco: (diaDeBanco) ? 'true' : '',
+                        almocoFeito: checkbox.checked
                     }
 
-                    
-                    const requisicao = await fetch (`${Global}usuario/lancarHora`, {
-                        method : 'POST',
-                        credentials : 'include',
-                        headers : {
-                            'Content-Type' : 'application/json',
-                            'Cookies' : decodeURIComponent(document.cookie)
+
+                    const requisicao = await fetch(`${Global}usuario/lancarHora`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Cookies': decodeURIComponent(document.cookie)
                         },
-                        body : JSON.stringify(dadosEnviados)
+                        body: JSON.stringify(dadosEnviados)
                     });
-        
+
                     const resposta = await requisicao.json();
 
-                    const requisicao2 = await fetch (`${Global}usuario/lancarBanco`, {
-                        method : 'POST',
-                        credentials : 'include',
-                        headers : {
-                            'Content-Type' : 'application/json',
-                            'Cookies' : decodeURIComponent(document.cookie)
+                    const requisicao2 = await fetch(`${Global}usuario/lancarBanco`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Cookies': decodeURIComponent(document.cookie)
                         },
-                        body : JSON.stringify({ bancoAtual, situacaoBancoHoras })
+                        body: JSON.stringify({ bancoAtual, situacaoBancoHoras, tempoDaMudanca, situacaoDaMudanca })
                     });
 
 
@@ -514,7 +543,7 @@
 
                     sessionStorage.setItem('status', resposta.status);
                     sessionStorage.setItem('mensagem', resposta.msg);
-        
+
                     if (resposta.status == 'success' && resposta2.status == 'success') {
                         window.location.href = '../resumoHoras/resumoHoras.html';
                     } else {
@@ -525,16 +554,16 @@
                 } catch (error) {
                     console.log(error);
                     botaoLancar.setAttribute('disabled', 'false');
-                } 
-                     
+                }
+
             } else {
                 alertaPageAtual('error', 'Preencha todos os campos');
                 botaoLancar.setAttribute('disabled', 'false');
             }
 
-        } 
+        }
 
-        async function removerSegundos () {
+        async function removerSegundos() {
             const horario = await puxarBanco();
 
             const hora = horario['horas'].toString();
@@ -548,7 +577,7 @@
             // Junta o array novamente usando ":" como separador
             const horaSemSegundos = partes.join(":");
 
-            return { 'hora' : horaSemSegundos, 'situacao' : horario.situacao };
+            return { 'hora': horaSemSegundos, 'situacao': horario.situacao };
 
         }
 
@@ -556,7 +585,7 @@
             lancarHoras(false);
         });
 
-        document.getElementById('diaDeBanco').addEventListener('click' , async () => {
+        document.getElementById('diaDeBanco').addEventListener('click', async () => {
             document.getElementById('horaEntrada').value = '00:00';
             document.getElementById('horaSaida').value = '00:00';
             document.getElementById('motivoHorario').value = '01 - Motivo Particular';
@@ -567,7 +596,7 @@
 
         })
     </script>
-    
-</body>
-</html>
 
+</body>
+
+</html>
