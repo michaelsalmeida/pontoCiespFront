@@ -67,6 +67,20 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
 
         });
 
+        function concertarData (dataRecebida) {
+
+            // Converte a string para um objeto Date
+            const data = new Date(dataRecebida);
+
+            // Diminui 1 dia
+            data.setDate(data.getDate() + 0);
+
+            // Formata a nova data para string (opcional)
+            const novaData = data.toISOString().split('T')[0];
+
+            return novaData;
+        }
+
         function criarTabela(dados) {
             console.log(dados)
 
@@ -108,7 +122,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
                 for (var i = 0; i < dados.length; i ++) {
                     const dataRetorno = new Date(dados[i]['data']);
 
-                    const soData = dataRetorno.toLocaleDateString('pt-BR');
+                    const soData = concertarData(dataRetorno);
 
                     linha += `<tr><td><p>${soData}</p></td><td><p>${dados[i]['entrada']}</p></td><td><p>${dados[i]['saida']}</p></td><td><p>${dados[i]['idaIntervalo']}</p></td><td><p>${dados[i]['voltaIntervalo']}</p></td><td><p>${dados[i]['cargaDiaria']}</p></td><td><p>${dados[i]['motivo']}</p></td><td><p>${dados[i]['descricao']}</p></td></tr>
                     `
