@@ -1,5 +1,7 @@
 import { alertas, alertaPageAtual } from '../sweetalert.js';
 
+import Global from '../../global.js';
+
         import { sair, verificarLogoff } from '../funcoes.js';
 
         window.addEventListener('load', async () => {
@@ -29,7 +31,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
         }
 
         async function verificarSenhaMestre (senha) {
-            const requisicao = await fetch (`https://pontociespapi.onrender.com/usuario/verificarSenhaMestre`, {
+            const requisicao = await fetch (`${Global}usuario/verificarSenhaMestre`, {
                     method: 'POST',
                     headers: {
                         'Content-Type':'application/json'
@@ -65,7 +67,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
         }
 
         async function verificarCargoLogado () {
-            const requisicao = await fetch ('https://pontociespapi.onrender.com/usuario/verificarCargoLogado', {
+            const requisicao = await fetch (`${Global}usuario/verificarCargoLogado`, {
                         method : 'POST',
                         headers : {
                             'Content-Type':'application/json',
@@ -126,7 +128,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
 
             console.log(dadosEnviados);
 
-            const requisicao = await fetch (`https://pontociespapi.onrender.com/usuario/cadastro`, {
+            const requisicao = await fetch (`${Global}usuario/cadastro`, {
                 method: 'POST',
                 headers: {
                     'Content-Type':'application/json'
@@ -162,3 +164,11 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
         document.getElementById('fechaModal').addEventListener('click', () => {
             fechaModal();
         })
+
+        document.addEventListener("keydown", function(event) {
+            // Verificando se a tecla pressionada é ENTER
+            if (event.key === "Enter") {
+                event.preventDefault(); // Evita o envio do formulário, se houver
+                document.getElementById("cadastrar").click(); // Ativa o botão
+            }
+        });
