@@ -17,6 +17,7 @@
     --tablet: ;
     --blue-light: #01c2ff;
     --red: #ff1e00;
+    --darkMode : #171c21;
   }
 
 #divLogin {
@@ -39,6 +40,7 @@ body {
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
+    background-color: #171c21;
 }
 
 

@@ -34,6 +34,7 @@ label {
 #sair {
     border-color: var(--red);
     border-style: double;
+    background-color: #171c21;
     padding: 10px;
     font-weight: bolder;
     color: var(--red);
@@ -156,7 +157,7 @@ label {
     border-radius: 10px;
     padding: 10px;
     font-weight: bolder;
-    background-color: white;
+    background-color: #171c21;
     color: var(--red);
     cursor: pointer;
 }
@@ -172,7 +173,7 @@ label {
     border-radius: 10px;
     padding: 10px;
     font-weight: bolder;
-    background-color: white;
+    background-color: #171c21;
     color: var(--red);
     cursor: pointer;
 }

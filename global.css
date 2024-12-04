@@ -27,6 +27,7 @@ h2,
 span {
   list-style: none;
   text-decoration: none;
+  color: white;
 }
 
 b {
@@ -84,11 +85,12 @@ b {
 }
 
 body {
-  background-color: var(--white);
+  background-color: #171c21;
   color: var(--black);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  color: white;
 }
 
 main {

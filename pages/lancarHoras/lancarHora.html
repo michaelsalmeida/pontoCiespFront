@@ -14,7 +14,7 @@
 
 <body>
 
-    <header></header>
+    <header style="background-color: #171c21;"></header>
 
     <div id="botaoLogoff">
         <button id="sair">Logoff</button>
@@ -28,19 +28,19 @@
 
         <div id="divSelect">
             <label for="data">DATA *</label>
-            <input type="date" name="data" id="data" class="inputCadastro" required>
+            <input type="date" name="data" id="data" class="inputCadastro" style="background-color: #171c21; color: white;" required>
             <p id="labelDataInvalida" style="display: none;">data ja possui lançamento</p>
         </div>
 
         <div id="divMedio">
             <div id="divPequeno">
                 <label for="horaEntrada">ENTRADA *</label>
-                <input type="time" name="horaEntrada" id="horaEntrada" class="inputCadastro" required>
+                <input type="time" name="horaEntrada" id="horaEntrada" class="inputCadastro" style="background-color: #171c21; color: white;" required>
             </div>
 
             <div id="divPequeno" class="divEsquerdo">
                 <label for="horaSaida">SAIDA *</label>
-                <input type="time" name="horaSaida" id="horaSaida" class="inputCadastro" required>
+                <input type="time" name="horaSaida" id="horaSaida" class="inputCadastro" style="background-color: #171c21; color: white;" required>
 
             </div>
 
@@ -52,7 +52,7 @@
 
                 <label for="motivoHorario">MOTIVO *</label>
 
-                <select id="motivoHorario" class="inputMaior">
+                <select id="motivoHorario" class="inputMaior" style="background-color: #171c21; color: white;">
                     <option value="#" selected>Escolha um motivo</option>
                     <option value="00 - Jornada Normal">00 - Jornada Normal</option>
                     <option value="01 - Motivo Particular">01 - Motivo Particular</option>
@@ -70,8 +70,7 @@
             <div id="divPequeno" class="divEsquerdo">
                 <label for="motivo">DESCREVA *</label>
 
-                <input type="text" name="motivo" id="motivo" class="inputMaior" placeholder="Descreva o motivo"
-                    required>
+                <input type="text" name="motivo" id="motivo" class="inputMaior" placeholder="Descreva o motivo" style="background-color: #171c21; color: white;" required>
 
             </div>
 
