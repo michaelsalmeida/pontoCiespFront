@@ -37,6 +37,22 @@ main {
     gap: 40px;
 }
 
+/* Mudanca de modo */
+
+#changeMode {
+    border-radius: 10px;
+    background-color: #171c21;
+    cursor: pointer;
+}
+
+
+#imgBotao {
+    width: 35px;
+}
+
+
+/* fim mudanca de modo */
+
 #modal {
     display: none;
 }

@@ -70,6 +70,8 @@ import { alertas, alertaPageAtual } from './pages/sweetalert.js';
 
                 document.cookie = `usuario=${resposta.cookie}; expires=${expires}; path=/;`;
 
+                sessionStorage.setItem('modo', 'dark');
+
                 window.location.href = './pages/resumoHoras/resumoHoras.html';
 
             } else {
