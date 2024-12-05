@@ -99,7 +99,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
 
             const resposta = await requisicao.json();
 
-            return { 'horas': resposta['banco'][0]['horasAcumuladas'], 'situacao': resposta['banco'][0]['situacaoBanco'] };
+            return { 'horas': resposta['banco'][0]['horasAcumuladas'], 'situacao': resposta['banco'][0]['situacaoBanco'], 'tempoDaMudanca': resposta['banco'][0]['tempoDaMudanca'], 'situacaoDaMudanca': resposta['banco'][0]['situacaoDaMudanca'] };
         }
 
         async function calcularDiferencaHorarios(horaInicial, horaFinal) {
@@ -294,9 +294,9 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
 
                 var situacaoBancoHoras = puxarBancoDeHoras.situacao;
 
-                var tempoDaMudanca;
+                var tempoDaMudanca = puxarBancoDeHoras.tempoDaMudanca;
 
-                var situacaoDaMudanca;
+                var situacaoDaMudanca = puxarBancoDeHoras.situacaoDaMudanca;
 
                 try {
 
@@ -439,6 +439,8 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
 
                     const resposta = await requisicao.json();
 
+                    console.log('testanto aqui', bancoAtual, situacaoBancoHoras, tempoDaMudanca, situacaoDaMudanca)
+
                     const requisicao2 = await fetch(`${Global}usuario/lancarBanco`, {
                         method: 'POST',
                         credentials: 'include',
@@ -489,7 +491,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
             // Junta o array novamente usando ":" como separador
             const horaSemSegundos = partes.join(":");
 
-            return { 'hora': horaSemSegundos, 'situacao': horario.situacao };
+            return { 'hora': horaSemSegundos, 'situacao': horario.situacao, 'tempoDaMudanca': horario.tempoDaMudanca, 'situacaoDaMudanca' : horario.situacaoDaMudanca };
 
         }
 
