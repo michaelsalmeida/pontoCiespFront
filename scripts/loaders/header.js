@@ -7,7 +7,7 @@ function loadHeader() {
   loader(urlDeploy, function (response) {
     const header = document.querySelector('header')
     header.innerHTML = response
-    activeHeader()
+    activeHeader();
   })
 }
 
