@@ -46,7 +46,7 @@ import { alertas, alertaPageAtual } from './pages/sweetalert.js';
             let registro = document.getElementById('registro').value;
             let senha = document.getElementById('senha').value;
 
-            const requisicao = await fetch (`http://localhost:3000/usuario/login`, {
+            const requisicao = await fetch (`${Global}usuario/login`, {
                 method : 'POST',
                 credentials : 'include',
                 headers : {
