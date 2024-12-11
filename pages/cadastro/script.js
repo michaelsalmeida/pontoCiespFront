@@ -111,6 +111,15 @@ import Global from '../../global.js';
             }
         }
 
+        function temCaracterDesejado(caracter, texto) {
+            for (let letra of caracter) {
+                if (texto.includes(letra)) {
+                    return true; // Retorna true se encontrar uma letra
+                }
+            }
+            return false; // Retorna false se não encontrar nenhuma letra
+        }
+
         async function entrar () {
             const registro = document.getElementById('registro').value;
             const nome = document.getElementById('nome').value;
@@ -118,35 +127,47 @@ import Global from '../../global.js';
             const email = document.getElementById('email').value;
             const tipo = document.getElementById('cargo').value;
 
-            const dadosEnviados = {
-                registro : registro,
-                nome : nome,
-                sobrenome : sobrenome,
-                email : email, 
-                tipo : tipo
-            };
+            const cpfValido = temCaracterDesejado("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", registro);
 
-            console.log(dadosEnviados);
+            const emailValido = temCaracterDesejado('@', email);
 
-            const requisicao = await fetch (`${Global}usuario/cadastro`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify(dadosEnviados) 
-            });
-
-            const resposta = await requisicao.json();
-            
-            if (resposta.status == 'success') {
-                sessionStorage.setItem('status', resposta.status);
-                sessionStorage.setItem('mensagem', resposta.msg);
-
-                window.location.href = '../resumoHoras/resumoHoras.html';
-                
+            if (cpfValido == true || registro.length < 11 || registro.length > 11) {
+                alertaPageAtual('error', 'Registro preenchido incorretamente');
+            } else if (emailValido == false) {
+                alertaPageAtual('error', 'E-mail incorreto');
             } else {
-                alertaPageAtual(resposta.status, resposta.msg);
+                const dadosEnviados = {
+                    registro : registro,
+                    nome : nome,
+                    sobrenome : sobrenome,
+                    email : email, 
+                    tipo : tipo
+                };
+    
+                console.log(dadosEnviados);
+    
+                const requisicao = await fetch (`${Global}usuario/cadastro`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify(dadosEnviados) 
+                });
+    
+                const resposta = await requisicao.json();
+                
+                if (resposta.status == 'success') {
+                    sessionStorage.setItem('status', resposta.status);
+                    sessionStorage.setItem('mensagem', resposta.msg);
+    
+                    window.location.href = '../resumoHoras/resumoHoras.html';
+                    
+                } else {
+                    alertaPageAtual(resposta.status, resposta.msg);
+                }
+
             }
+
         }
 
         document.getElementById('cadastrar').addEventListener('click', () => {

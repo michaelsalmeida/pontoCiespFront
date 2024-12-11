@@ -1,5 +1,7 @@
-const Global2 = 'http://localhost:3000/';
+const Global3 = 'http://localhost:3000/';
 
-const Global = 'https://pontociespapi.onrender.com/';
+const Global2 = 'https://pontociespapi.onrender.com/';
+
+const Global = 'http://192.168.0.254:3000/';
 
 export default Global;

@@ -35,6 +35,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    background-color: #171c21;
 }
 
 #sair:hover {
@@ -100,6 +101,7 @@ body {
     background-color: white;
     color: var(--red);
     cursor: pointer;
+    background-color: #171c21;
 }
 
 #cadastrar:hover {

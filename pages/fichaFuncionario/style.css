@@ -48,6 +48,7 @@ main {
     padding-right: 5px;
     width: 100%;
     font-weight: bolder; 
+    background-color: #171c21;
 }
 
 #sair {
@@ -59,6 +60,7 @@ main {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    background-color: #171c21;
 }
 
 #sair:hover {
@@ -102,20 +104,21 @@ main {
 
 th {
     text-align: center;
-    background-color: white;
+    background-color: #171c21;
     border-top: none;
     border-right: 2px solid black;
 }
 
 td {
     text-align: center;
-    background-color: white;
+    background-color: #171c21;
     border: none;
 } 
 
 th, td {
     border-style: double;
     border: none;
+    background-color: #171c21;
 }
 
 #tabelaHoras {
@@ -130,6 +133,7 @@ th, td {
     display: none;
     justify-content: center;
     align-items: center;
+    background-color: #171c21;
 }
 
 #baixarPDF {
@@ -141,6 +145,7 @@ th, td {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    background-color: #171c21;
 }
 
 #baixarPDF:hover {
@@ -155,7 +160,7 @@ th, td {
     text-align: center;
     justify-content: center;
     padding: 10px;
-    background-color: white;
+    background-color: #171c21;
 }
 
 #textSemHora {

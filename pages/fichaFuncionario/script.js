@@ -95,8 +95,8 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
             var tabela = `
             <div id="divRelatorio">
 
-            <div id="labelResumo">
-                <h1 id="textResumo">${nome}</h1>
+            <div id="labelResumo" style="background-color: #171c21;">
+                <h1 id="textResumo" >${nome}</h1>
             </div>
             <table style="width:100%" id ="tabelaHoras"><tr>
             <th>Data</th>
