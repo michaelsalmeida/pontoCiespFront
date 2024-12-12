@@ -10,12 +10,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-repeat: no-repeat; /* Impede que a imagem se repita */
-    background-position: center; /* Centraliza a imagem horizontal e verticalmente */
-    background-attachment: fixed; /* Faz com que a imagem fique fixa na tela */
-    background-size: cover;
-    background-size: 300px;
-    background-position-y: 400px;
 }
 
 label {
@@ -85,6 +79,7 @@ label {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 #data {
@@ -208,6 +203,12 @@ label {
         flex-direction: column;
     }
     body {
-        margin-top: 90px;
+        margin-top: 5px;
+        overflow: hidden;
+        width: 97%;
+    }
+
+    html {
+        overflow: hidden;
     }
 }

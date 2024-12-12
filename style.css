@@ -105,5 +105,7 @@ body {
     #divLogin {
         top: 20%;
         left: 3%;
+        width: 300px;
+        height: 330px;
     }
 }

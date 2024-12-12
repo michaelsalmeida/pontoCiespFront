@@ -2,22 +2,30 @@
     padding: 0;
     margin: 0 auto;
     font-family: Arial, Helvetica, sans-serif;
+    
 }
 
 #divLogin {
     display: flex;
     flex-direction: column;
-    position: absolute;
     justify-content: center;
     align-items: center;
-    top: 30%;
-    left: 40%;
     background-color: white;
     width: 450px;
     height: 400px;
     gap: 20px;
     border-radius: 50px 0px 50px 0px;
     opacity: 0.85;
+}
+
+body {
+    display: flex; /* ou grid */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #171c21;
 }
 
 #plogin {
@@ -69,17 +77,18 @@
 #entrar {
     border-color: var(--red);
     border-style: double;
+    background-color: white;
     padding: 10px;
     font-weight: bolder;
-    color: var(--red);
+    color: red;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
 }
 
 #entrar:hover {
-    background-color: var(--red);
-    color: var(--white);
+    background-color: red;
+    color: white;
 }
 
 #criarConta {
@@ -90,5 +99,7 @@
     #divLogin {
         top: 20%;
         left: 35%;
+        width: 300px;
+        height: 330px;
     }
 }
