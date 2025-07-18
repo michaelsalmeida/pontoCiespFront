@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style2.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="divChamada">
+        <label for="senha" id="textSenha">Chamar senha</label>
+        <input type="text" id="senha" placeholder="Digite a senha para ser chamada">
+    
+        <button id="chamar">CHAMAR</button>
+
+    </div>
+
+    <script type="module">
+
+
+        document.getElementById('chamar').addEventListener('click', async () => {
+
+            const senha = document.getElementById('senha').value;
+
+            const senhaAnterior = senha;
+
+            const requisicao = await fetch (`http://192.168.0.254:3000/chamada/enviarSenha`, {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json',
+                },
+                body : JSON.stringify({ senha, senhaAnterior })
+            });
+    
+    
+            const resposta = await requisicao.json();
+
+            console.log(resposta);
+        });
+
+
+    </script>
+</body>
+</html>

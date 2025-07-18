@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: black;
+}
+
+#divChamada {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+#textSenha {
+    color: white;
+}
+
+#senha {
+    border: 2px solid red;
+    border-radius: 5px;
+    width: 200px;
+    height: 50px;
+    padding: 5px;
+}
+
+#chamar {
+    border: 4px solid red;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bolder;
+    color: red;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+#chamar:hover{
+    background-color: black;
+    color: white;
+}

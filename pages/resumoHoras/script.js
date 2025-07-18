@@ -20,10 +20,14 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
             return novaData;
         }
 
-        document.getElementById('baixarPDF').addEventListener('click', function() {
+        document.getElementById('baixarPDF').addEventListener('click', async function() {
             const { jsPDF } = window.jspdf;
 
-            const banco = removerSegundos();
+            const banco = await removerSegundos();
+
+            console.log(banco);
+
+            const horaBanco = banco.banco;
 
             var tabela = document.getElementById('tabelaPdf');
 
@@ -46,9 +50,17 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
                 let heightLeft = imgHeight;
 
                 let position = 10; // Margem superior (10mm)
+                const horasGuardadas = horaBanco;
+                pdf.text(`Banco de horas - ${horasGuardadas}`, 10, position);
+                position += 10;
+
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
 
                 pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // Margem esquerda (10mm)
                 heightLeft -= pageHeight;
+
+
 
 
                 // Adicionando campos para assinatura
@@ -87,7 +99,9 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
                 
                 alertas();
 
-                const banco = await removerSegundos();
+                const banco = await removerSegundos(); 
+
+                console.log(`Banco acumulado aqui ${banco}`)
 
                 const divBanco = document.getElementById('bancoAcumulado');
 
@@ -253,7 +267,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
             // Remove o último elemento do array (os segundos)
             partes.pop();
 
-            if(Number(partes[0]) > 40) {
+            if(Number(partes[0]) > 100) {
                 return false
             } else {
 

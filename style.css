@@ -70,6 +70,27 @@ body {
     border-right: none;
 }
 
+#divPassword {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    width: 80%;
+    
+}
+
+#olho {
+    cursor: pointer;
+}
+
+#olho:hover{
+    box-shadow: 0px 0px 20px 5px black;
+    transition: 0.4s all;
+    border-radius: 5px;
+}
+
+
 #registro:focus {
     box-shadow: 0px 0px 20px 5px black;
     transition: 0.5s;

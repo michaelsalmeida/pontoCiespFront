@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <label for="senhaAnterior">Senha Anterior</label>
+        <p id="senhaAnterior" style="font-size: 30px;"></p>
+    </div>
+    <div id="divSenha">
+
+        <label for="teste" id="labelSenha">Senha</label>
+        <div id="numero">
+
+            <p id="teste"></p>
+        </div>
+
+    </div>
+
+    <audio id="meuAudio" src="../../Campainha Efeitos Sonoro.mp3"></audio>
+
+    <button id="puxar">Puxar</button>
+
+
+    <script type="module">
+        
+
+            var senha = '';
+
+            while(senha == '') {
+
+                const audio = document.getElementById('meuAudio');
+                const requisicao = await fetch (`http://192.168.0.254:3000/chamada/proximaChamada`, {
+                    method : 'GET',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                    }
+                });
+
+
+                const resposta = await requisicao.json();
+
+                const senhaBanco = resposta['senha'][0]['senha'];
+
+
+                if(resposta['senha'][0]['senha'] != 0) {
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 5000);
+                    document.getElementById('teste').innerHTML = senhaBanco;
+                    audio.play();
+
+
+                    senha = senhaBanco;
+
+                    const requisicao2 = await fetch (`http://192.168.0.254:3000/chamada/apagarSenha`, {
+                        method : 'GET',
+                        headers : {
+                            'Content-Type' : 'application/json',
+                        }
+                    });
+
+                }
+
+
+            }
+
+
+
+
+
+        // async function puxarChamada2 () {
+
+        //     var senha = '';
+
+        //     while(senha == '') {
+
+        //         const audio = document.getElementById('meuAudio');
+        //         const requisicao = await fetch (`http://192.168.0.254:3000/chamada/proximaChamada`, {
+        //             method : 'GET',
+        //             headers : {
+        //                 'Content-Type' : 'application/json',
+        //             }
+        //         });
+
+
+        //         const resposta = await requisicao.json();
+
+        //         const senhaBanco = resposta['senha'][0]['senha'];
+
+        //         console.log(resposta['senha']);
+
+        //         if(resposta['senha'][0]['senha'] != 0) {
+
+        //             document.getElementById('teste').innerHTML = senhaBanco;
+        //             audio.play();
+
+
+        //             senha = senhaBanco;
+
+        //             const requisicao2 = await fetch (`http://192.168.0.254:3000/chamada/apagarSenha`, {
+        //                 method : 'GET',
+        //                 headers : {
+        //                     'Content-Type' : 'application/json',
+        //                 }
+        //             });
+
+        //             setTimeout(function() {
+        //                 location.reload();
+        //             }, 20000);
+        //         }
+
+
+        //     }
+
+        // }
+
+        window.onload = async function chamadaAnterior() {
+            const requisicao = await fetch (`http://192.168.0.254:3000/chamada/proximaChamada`, {
+                    method : 'GET',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                    }
+                });
+    
+    
+            const resposta = await requisicao.json();
+
+            console.log(resposta['senha'][0]['senhaAnterior'])
+
+            if(resposta['senha'][0]['senhaAnterior']) {
+                document.getElementById('senhaAnterior').innerText = resposta['senha'][0]['senhaAnterior']
+            }
+        }
+
+    </script>
+</body>
+</html>

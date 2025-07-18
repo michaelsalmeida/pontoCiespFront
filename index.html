@@ -17,106 +17,34 @@
         <input type="text" id="registro" name="registro" class="inputLogin" placeholder="N° de registro" required>
     
         <label for="senha">Senha</label>
-        <input type="password" id="senha" name="senha" class="inputLogin" placeholder="Digite sua senha" required>
+        <div id="divPassword">
+            <input type="password" id="senha" name="senha" class="inputLogin" placeholder="Digite sua senha" required>
+            <img id="olho" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABDUlEQVQ4jd2SvW3DMBBGbwQVKlyo4BGC4FKFS4+TATKCNxAggkeoSpHSRQbwAB7AA7hQoUKFLH6E2qQQHfgHdpo0yQHX8T3exyPR/ytlQ8kOhgV7FvSx9+xglA3lM3DBgh0LPn/onbJhcQ0bv2SHlgVgQa/suFHVkCg7bm5gzB2OyvjlDFdDcoa19etZMN8Qp7oUDPEM2KFV1ZAQO2zPMBERO7Ra4JQNpRa4K4FDS0R0IdneCbQLb4/zh/c7QdH4NL40tPXrovFpjHQr6PJ6yr5hQV80PiUiIm1OKxZ0LICS8TWvpyyOf2DBQQtcXk8Zi3+JcKfNafVsjZ0WfGgJlZZQxZjdwzX+ykf6u/UF0Fwo5Apfcq8AAAAASUVORK5CYII="
+            />
+
+        </div>
     
         <button id="entrar">Entrar</button>
+        <!-- <button id="entrar"><a href="./pages/chamada/receber.html">Tela</a></button>
+        <button id="entrar"><a href="./pages/chamada/chamar.html">Chamar</a></button> -->
+        
     </div>
-    
-    <!-- <script type="module">
-        import { alertas, alertaPageAtual } from './pages/sweetalert.js';
-        import Global from './global.js';
-        
-        window.addEventListener('load', async () => {
-            alertas();
-        })
 
-        document.getElementById('registro').addEventListener('blur', async () => {
-            verificarPrimeiroAcesso();
-        })
-
-        async function verificarPrimeiroAcesso () {
-            console.log('entrei');
-            
-            let registro = document.getElementById('registro').value;
-
-            if (registro != '') {
-                const requisicao = await fetch (`${Global}usuario/verificarPrimeiroRegistro`, {
-                    method : 'POST',
-                    credentials : 'include',
-                    headers : {
-                        'content-type' : 'application/json',
-                        'Cookies' : decodeURIComponent(document.cookie)
-                    },
-                    body : JSON.stringify({ registro })
-                })
-    
-                const resposta = await requisicao.json();
-    
-                console.log(resposta);
-    
-                if (resposta.senhaNoBanco.senha == 'Ciesp@sul') {
-                    sessionStorage.setItem('status', 'info');
-                    sessionStorage.setItem('mensagem', 'Primeiro acesso, realize o cadastro da sua senha');
-                    localStorage.setItem('registro', registro);
-    
-                    window.location.href = './pages/primeiroLogin/primeiroLogin.html';
-                }
-
-            }
-
-
-        }
-
-        async function Logar () {
-            let registro = document.getElementById('registro').value;
-            let senha = document.getElementById('senha').value;
-
-            const requisicao = await fetch (`${Global}usuario/login`, {
-                method : 'POST',
-                credentials : 'include',
-                headers : {
-                    'content-type' : 'application/json',
-                    'Cookies' : decodeURIComponent(document.cookie)
-                },
-                body : JSON.stringify({ registro, senha })
-            })
-
-            const resposta = await requisicao.json();
-
-            console.log(resposta);
-
-            if (resposta.status == 'success') {
-                sessionStorage.setItem('nome', resposta.nome);
-                
-                const d = new Date();
-                d.setTime(d.getTime() + (3*60*60*1000));
-                let expires = "expires="+ d.toUTCString();
-                console.log(resposta);
-
-                document.cookie = `usuario=${resposta.cookie}; expires=${expires}; path=/;`;
-
-                window.location.href = './pages/resumoHoras/resumoHoras.html';
-
-            } else {
-                alertaPageAtual(resposta.status, resposta.msg);
-            }
-        }
-        
-
-        document.getElementById('entrar').addEventListener('click', () => { 
-            Logar();
-        })
-
-        document.addEventListener("keydown", function(event) {
-            // Verificando se a tecla pressionada é ENTER
-            if (event.key === "Enter") {
-                event.preventDefault(); // Evita o envio do formulário, se houver
-                document.getElementById("entrar").click(); // Ativa o botão
-            }
+    <script>
+        document.getElementById('olho').addEventListener('mousedown', function() {
+        document.getElementById('senha').type = 'text';
         });
 
+        document.getElementById('olho').addEventListener('mouseup', function() {
+        document.getElementById('senha').type = 'password';
+        });
 
-    </script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+        // Para que o password não fique exposto apos mover a imagem.
+        document.getElementById('olho').addEventListener('mousemove', function() {
+        document.getElementById('senha').type = 'password';
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

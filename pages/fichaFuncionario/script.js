@@ -2,8 +2,14 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
         import { sair, verificarLogoff, verificarCargoLogado } from '../funcoes.js';
         import Global from '../../global.js';
 
-        document.getElementById('baixarPDF').addEventListener('click', function() {
+        document.getElementById('baixarPDF').addEventListener('click',async function() {
             const { jsPDF } = window.jspdf;
+
+            const banco = await removerSegundos();
+
+            console.log(banco);
+
+            const horaBanco = banco.banco;
 
             /// Capturando a tabela
             html2canvas(document.getElementById('divRelatorio'), { scale: 2 }).then(canvas => {
@@ -22,6 +28,14 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
                 let heightLeft = imgHeight;
 
                 let position = 10; // Margem superior (10mm)
+
+                const horasGuardadas = horaBanco;
+                pdf.text(`Banco de horas - ${horasGuardadas}`, 10, position);
+                position += 10;
+
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
 
                 pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // Margem esquerda (10mm)
                 heightLeft -= pageHeight;
@@ -171,6 +185,7 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
             const requisicao = await fetch(`${Global}usuario/buscarBanco` , {
                     method : 'POST',
                     headers : {
+                        'Content-Type':'application/json',
                         'Cookies' : decodeURIComponent(document.cookie)
                     },
                     body : JSON.stringify({ registro })
@@ -192,15 +207,10 @@ import { alertas, alertaPageAtual } from '../sweetalert.js';
             // Remove o último elemento do array (os segundos)
             partes.pop();
 
-            if(Number(partes[0]) > 40) {
-                return false
-            } else {
+            // Junta o array novamente usando ":" como separador
+            const horaSemSegundos = partes.join(":");
 
-                // Junta o array novamente usando ":" como separador
-                const horaSemSegundos = partes.join(":");
-    
-                return { 'banco' : horaSemSegundos, 'situacao' : horario['situacao'] };
-            }
+            return { 'banco' : horaSemSegundos, 'situacao' : horario['situacao'] };
 
         }
         

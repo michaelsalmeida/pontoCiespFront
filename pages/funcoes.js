@@ -47,11 +47,11 @@ async function verificarLogoff () {
 
     console.log(resposta);
 
-    if (resposta.logoff == 1) {
+    if (resposta.logoff == 1 || resposta.status == 'error') {
         sessionStorage.setItem('status', 'error');
         sessionStorage.setItem('mensagem', 'Realize o login novamente')
 
-        window.location.href = '../login/index.html';
+        window.location.href = '../../index.html';
     }
 }
 
